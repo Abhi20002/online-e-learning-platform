@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { Clock, Users, Star, Globe, Award, PlayCircle, FileText, Infinity, ChevronRight, Share2, Heart } from "lucide-react";
 
 import { Header } from "@/components/common/header";
@@ -17,14 +18,28 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Progress } from "@/components/ui/progress";
-import { CourseCard } from "@/components/cards/course-card";
 import { CourseSchema, BreadcrumbSchema, ReviewSchema } from "@/components/seo/structured-data";
 
 import { courses } from "@/mock/courses";
 import { reviews } from "@/mock/reviews";
-import { formatPrice, formatDuration, getInitials, formatRelativeTime, getLevelColor } from "@/lib/utils";
+import { formatPrice, formatDuration, getInitials, getLevelColor } from "@/lib/utils";
 import type { CourseCard as CourseCardType } from "@/types";
+
+// Dynamic imports for below-the-fold components (Performance optimization)
+const CourseReviews = dynamic(
+  () => import("@/components/course/course-reviews").then((mod) => ({ default: mod.CourseReviews })),
+  {
+    loading: () => import("@/components/loading/course-reviews-skeleton").then((mod) => <mod.CourseReviewsSkeleton />),
+    ssr: true,
+  }
+);
+
+const RelatedCourses = dynamic(
+  () => import("@/components/course/related-courses").then((mod) => ({ default: mod.RelatedCourses })),
+  {
+    ssr: true,
+  }
+);
 
 interface CoursePageProps {
   params: Promise<{
@@ -69,6 +84,16 @@ export async function generateMetadata({ params }: CoursePageProps): Promise<Met
   };
 }
 
+/**
+ * Static Site Generation (SSG)
+ * Pre-renders all course pages at build time for optimal performance
+ */
+export async function generateStaticParams() {
+  return courses.map((course) => ({
+    slug: course.slug,
+  }));
+}
+
 export default async function CoursePage({ params }: CoursePageProps) {
   const { slug } = await params;
   const course = courses.find((c) => c.slug === slug);
@@ -101,14 +126,6 @@ export default async function CoursePage({ params }: CoursePageProps) {
   const discountPercentage = course.discountPrice
     ? Math.round(((course.price - course.discountPrice) / course.price) * 100)
     : 0;
-
-  const ratingBreakdown = {
-    5: Math.round(course.reviewCount * 0.7),
-    4: Math.round(course.reviewCount * 0.2),
-    3: Math.round(course.reviewCount * 0.07),
-    2: Math.round(course.reviewCount * 0.02),
-    1: Math.round(course.reviewCount * 0.01),
-  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -328,107 +345,15 @@ export default async function CoursePage({ params }: CoursePageProps) {
                 </Card>
               </div>
 
-              {/* Student Reviews */}
-              <div>
-                <h2 className="text-2xl font-bold mb-4">Student feedback</h2>
+              {/* Student Reviews - Dynamically Loaded */}
+              <CourseReviews
+                reviews={courseReviews}
+                rating={course.rating}
+                reviewCount={course.reviewCount}
+              />
 
-                {/* Rating Overview */}
-                <div className="grid md:grid-cols-[200px_1fr] gap-8 mb-8">
-                  <div className="text-center">
-                    <div className="text-5xl font-bold mb-2">{course.rating}</div>
-                    <div className="flex items-center justify-center gap-1 mb-2">
-                      {Array.from({ length: 5 }).map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`h-5 w-5 ${
-                            i < Math.floor(course.rating)
-                              ? "fill-yellow-400 text-yellow-400"
-                              : "text-gray-300"
-                          }`}
-                        />
-                      ))}
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      {course.reviewCount.toLocaleString()} ratings
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    {[5, 4, 3, 2, 1].map((stars) => {
-                      const count = ratingBreakdown[stars as keyof typeof ratingBreakdown];
-                      const percentage = (count / course.reviewCount) * 100;
-                      return (
-                        <div key={stars} className="flex items-center gap-3">
-                          <div className="flex items-center gap-1 w-20">
-                            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                            <span className="text-sm">{stars}</span>
-                          </div>
-                          <Progress value={percentage} className="flex-1" />
-                          <span className="text-sm text-muted-foreground w-12">
-                            {percentage.toFixed(0)}%
-                          </span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Reviews */}
-                <div className="space-y-6">
-                  {courseReviews.map((review) => (
-                    <Card key={review.id}>
-                      <CardContent className="p-6">
-                        <div className="flex gap-4">
-                          <Avatar>
-                            <AvatarImage src={review.userAvatar} alt={review.userName} />
-                            <AvatarFallback>{getInitials(review.userName)}</AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1">
-                            <div className="flex items-center justify-between mb-2">
-                              <div>
-                                <p className="font-semibold">{review.userName}</p>
-                                <div className="flex items-center gap-2 mt-1">
-                                  <div className="flex">
-                                    {Array.from({ length: 5 }).map((_, i) => (
-                                      <Star
-                                        key={i}
-                                        className={`h-4 w-4 ${
-                                          i < review.rating
-                                            ? "fill-yellow-400 text-yellow-400"
-                                            : "text-gray-300"
-                                        }`}
-                                      />
-                                    ))}
-                                  </div>
-                                  <span className="text-sm text-muted-foreground">
-                                    {formatRelativeTime(review.createdAt)}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                            <p className="text-muted-foreground">{review.comment}</p>
-                            <div className="mt-3 text-sm text-muted-foreground">
-                              Helpful? ({review.helpful})
-                            </div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-
-              {/* Related Courses */}
-              {relatedCourses.length > 0 && (
-                <div>
-                  <h2 className="text-2xl font-bold mb-4">More courses in {course.category}</h2>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {relatedCourses.map((relatedCourse) => (
-                      <CourseCard key={relatedCourse.id} course={relatedCourse} showWishlist={false} />
-                    ))}
-                  </div>
-                </div>
-              )}
+              {/* Related Courses - Dynamically Loaded */}
+              <RelatedCourses courses={relatedCourses} categoryName={course.category} />
             </div>
 
             {/* Right Column - Sticky Purchase Card */}
