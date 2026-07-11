@@ -61,8 +61,8 @@ export default function SignupPage() {
           description: "Welcome to EduPlatform. Let's start learning!",
         });
 
-        // Redirect to dashboard or onboarding
-        router.push("/");
+        // Redirect to dashboard after successful signup
+        router.push("/dashboard");
       } else {
         toast.error("Signup failed", {
           description: result.error || "Please try again with different details.",
