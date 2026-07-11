@@ -1,36 +1,124 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📚 Online E-Learning Platform
 
-## Getting Started
+> A modern, production-quality e-learning platform built with Next.js 15, React 19, TypeScript, and Tailwind CSS v4
 
-First, run the development server:
+[![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-blue)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-38bdf8)](https://tailwindcss.com/)
+
+## 🎯 Overview
+
+A comprehensive frontend-only e-learning platform featuring course browsing, student dashboards, admin panels, and mock authentication. Designed to showcase modern web development practices with enterprise-level code quality.
+
+## ✨ Features
+
+### **For Students**
+- 🔐 Secure login/signup with validation
+- 🎓 Browse 8+ courses with advanced filtering
+- 🔍 Search by title, category, level, rating, price
+- 📊 Personal dashboard with progress tracking
+- ❤️ Wishlist management
+- 🏆 Certificate viewing and sharing
+- ⚙️ Profile and notification settings
+
+### **For Admins**
+- 👨‍💼 Admin-only access control
+- 📈 Platform statistics and analytics
+- 📚 Course management (CRUD operations)
+- 👥 User management with role/status control
+- 🔧 Platform settings configuration
+
+### **General**
+- 🌓 Light/Dark mode support
+- 📱 Fully responsive (mobile-first)
+- 🚀 Fast performance
+- 🎨 Modern UI with Shadcn components
+
+## 🛠️ Tech Stack
+
+- **Next.js 15** (App Router)
+- **React 19**
+- **TypeScript** (Strict mode)
+- **Tailwind CSS v4** with @theme inline
+- **Shadcn UI** + Radix UI
+- **React Hook Form** + Zod
+- **Sonner** (Toast notifications)
+
+## 📦 Getting Started
+
+### Prerequisites
+- Node.js 18+
+- npm or yarn
+
+### Installation
 
 ```bash
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🔑 Login Credentials
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Student Account
+```
+Email: john.doe@example.com
+Password: Password123
+```
 
-## Learn More
+### Admin Account
+```
+Email: admin@eduplatform.com
+Password: Admin@123
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 📁 Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+├── app/                    # Next.js app directory
+│   ├── (auth)/            # Auth pages
+│   ├── admin/             # Admin panel
+│   ├── courses/           # Course pages
+│   └── dashboard/         # Student dashboard
+├── components/            # React components
+│   ├── ui/               # 25+ UI components
+│   ├── cards/            # Card components
+│   └── common/           # Header, Footer
+├── mock/                 # Mock data
+├── services/             # Mock services
+└── types/                # TypeScript types
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🚀 Available Scripts
 
-## Deploy on Vercel
+```bash
+npm run dev      # Start development server
+npm run build    # Build for production
+npm run start    # Start production server
+npm run lint     # Run ESLint
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📚 Key Pages
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `/` - Landing page
+- `/courses` - Course listing
+- `/courses/[slug]` - Course details
+- `/dashboard` - Student dashboard (protected)
+- `/admin` - Admin panel (admin only)
+
+## 🌐 Deployment
+
+Deploy easily on [Vercel](https://vercel.com):
+
+```bash
+npm run build
+```
+
+---
+
+**Built with using Next.js 15, React 19, and TypeScript**

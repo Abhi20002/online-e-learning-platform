@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Clock, Users, Star, Globe, Award, PlayCircle, FileText, Infinity, ChevronRight, Share2, Heart } from "lucide-react";
@@ -18,6 +19,7 @@ import {
 } from "@/components/ui/accordion";
 import { Progress } from "@/components/ui/progress";
 import { CourseCard } from "@/components/cards/course-card";
+import { CourseSchema, BreadcrumbSchema, ReviewSchema } from "@/components/seo/structured-data";
 
 import { courses } from "@/mock/courses";
 import { reviews } from "@/mock/reviews";
@@ -28,6 +30,43 @@ interface CoursePageProps {
   params: Promise<{
     slug: string;
   }>;
+}
+
+export async function generateMetadata({ params }: CoursePageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const course = courses.find((c) => c.slug === slug);
+
+  if (!course) {
+    return {
+      title: "Course Not Found",
+    };
+  }
+
+  return {
+    title: course.title,
+    description: course.shortDescription,
+    keywords: [course.category, course.level, "online course", "learning", ...course.tags],
+    openGraph: {
+      title: course.title,
+      description: course.shortDescription,
+      type: "website",
+      url: `https://learnhub.com/courses/${course.slug}`,
+      images: [
+        {
+          url: course.thumbnail,
+          width: 1200,
+          height: 630,
+          alt: course.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: course.title,
+      description: course.shortDescription,
+      images: [course.thumbnail],
+    },
+  };
 }
 
 export default async function CoursePage({ params }: CoursePageProps) {
@@ -73,6 +112,23 @@ export default async function CoursePage({ params }: CoursePageProps) {
 
   return (
     <div className="min-h-screen flex flex-col">
+      {/* SEO Structured Data */}
+      <CourseSchema course={course} />
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", url: "https://learnhub.com" },
+          { name: "Courses", url: "https://learnhub.com/courses" },
+          { name: course.category, url: `https://learnhub.com/courses?category=${course.categoryId}` },
+          { name: course.title, url: `https://learnhub.com/courses/${course.slug}` },
+        ]}
+      />
+      {courseReviews.length > 0 && (
+        <ReviewSchema
+          reviews={courseReviews}
+          itemName={course.title}
+        />
+      )}
+
       <Header />
 
       <main className="flex-1">
