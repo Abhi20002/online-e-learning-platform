@@ -93,11 +93,11 @@ export default function DashboardLayout({
   return (
     <div className="min-h-screen bg-background">
       {/* Top Header */}
-      <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60" role="banner">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <GraduationCap className="h-6 w-6 text-primary" />
+          <Link href="/" className="flex items-center space-x-2" aria-label="LearnHub Home">
+            <GraduationCap className="h-6 w-6 text-primary" aria-hidden="true" />
             <span className="font-bold text-lg">LearnHub</span>
           </Link>
 
@@ -107,11 +107,14 @@ export default function DashboardLayout({
             size="icon"
             className="lg:hidden"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle menu"
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-sidebar"
           >
             {isMobileMenuOpen ? (
-              <X className="h-5 w-5" />
+              <X className="h-5 w-5" aria-hidden="true" />
             ) : (
-              <Menu className="h-5 w-5" />
+              <Menu className="h-5 w-5" aria-hidden="true" />
             )}
           </Button>
 
@@ -132,9 +135,9 @@ export default function DashboardLayout({
       <div className="container mx-auto px-4 py-6">
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Sidebar Navigation - Desktop */}
-          <aside className="hidden lg:block w-64 flex-shrink-0">
+          <aside className="hidden lg:block w-64 flex-shrink-0" aria-label="Dashboard navigation">
             <div className="sticky top-24 space-y-1">
-              <nav className="space-y-1">
+              <nav className="space-y-1" aria-label="Main navigation">
                 {navigationItems.map((item) => {
                   const Icon = item.icon;
                   const isActive = pathname === item.href;
@@ -142,13 +145,14 @@ export default function DashboardLayout({
                     <Link
                       key={item.href}
                       href={item.href}
+                      aria-current={isActive ? "page" : undefined}
                       className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                         isActive
                           ? "bg-primary text-primary-foreground"
                           : "text-muted-foreground hover:bg-muted hover:text-foreground"
                       }`}
                     >
-                      <Icon className="h-5 w-5" />
+                      <Icon className="h-5 w-5" aria-hidden="true" />
                       <span className="font-medium">{item.label}</span>
                     </Link>
                   );
@@ -161,8 +165,9 @@ export default function DashboardLayout({
                 variant="ghost"
                 className="w-full justify-start text-muted-foreground hover:text-destructive hover:bg-destructive/10"
                 onClick={handleLogout}
+                aria-label="Logout"
               >
-                <LogOut className="h-5 w-5 mr-3" />
+                <LogOut className="h-5 w-5 mr-3" aria-hidden="true" />
                 Logout
               </Button>
             </div>
@@ -170,7 +175,12 @@ export default function DashboardLayout({
 
           {/* Mobile Navigation Menu */}
           {isMobileMenuOpen && (
-            <div className="lg:hidden fixed inset-0 top-16 z-50 bg-background border-t">
+            <div
+              id="mobile-sidebar"
+              className="lg:hidden fixed inset-0 top-16 z-50 bg-background border-t"
+              role="navigation"
+              aria-label="Mobile navigation"
+            >
               <div className="container mx-auto px-4 py-6">
                 {/* Mobile User Info */}
                 <div className="flex items-center gap-3 mb-6 p-4 bg-muted/50 rounded-lg">
@@ -185,7 +195,7 @@ export default function DashboardLayout({
                   </div>
                 </div>
 
-                <nav className="space-y-1">
+                <nav className="space-y-1" aria-label="Mobile navigation menu">
                   {navigationItems.map((item) => {
                     const Icon = item.icon;
                     const isActive = pathname === item.href;
@@ -194,13 +204,14 @@ export default function DashboardLayout({
                         key={item.href}
                         href={item.href}
                         onClick={() => setIsMobileMenuOpen(false)}
+                        aria-current={isActive ? "page" : undefined}
                         className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                           isActive
                             ? "bg-primary text-primary-foreground"
                             : "text-muted-foreground hover:bg-muted hover:text-foreground"
                         }`}
                       >
-                        <Icon className="h-5 w-5" />
+                        <Icon className="h-5 w-5" aria-hidden="true" />
                         <span className="font-medium">{item.label}</span>
                       </Link>
                     );
@@ -216,8 +227,9 @@ export default function DashboardLayout({
                     setIsMobileMenuOpen(false);
                     handleLogout();
                   }}
+                  aria-label="Logout"
                 >
-                  <LogOut className="h-5 w-5 mr-3" />
+                  <LogOut className="h-5 w-5 mr-3" aria-hidden="true" />
                   Logout
                 </Button>
               </div>
@@ -225,7 +237,7 @@ export default function DashboardLayout({
           )}
 
           {/* Main Content */}
-          <main className="flex-1 min-w-0">{children}</main>
+          <main id="main-content" className="flex-1 min-w-0">{children}</main>
         </div>
       </div>
     </div>

@@ -14,13 +14,13 @@ const socialIcons = {
 
 export function Footer() {
   return (
-    <footer className="border-t bg-muted/30">
+    <footer className="border-t bg-muted/30" role="contentinfo">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Brand */}
           <div className="lg:col-span-2 space-y-4">
-            <Link href="/" className="flex items-center space-x-2">
-              <GraduationCap className="h-8 w-8 text-primary" />
+            <Link href="/" className="flex items-center space-x-2" aria-label="LearnHub Home">
+              <GraduationCap className="h-8 w-8 text-primary" aria-hidden="true" />
               <span className="text-xl font-bold">{APP_NAME}</span>
             </Link>
             <p className="text-sm text-muted-foreground max-w-md">
@@ -28,7 +28,7 @@ export function Footer() {
               Start your learning journey today.
             </p>
             {/* Social Links */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4" aria-label="Social media links">
               {SOCIAL_LINKS.map((social) => {
                 const Icon = socialIcons[social.icon as keyof typeof socialIcons];
                 return (
@@ -40,7 +40,7 @@ export function Footer() {
                     className="text-muted-foreground hover:text-primary transition-colors"
                     aria-label={social.name}
                   >
-                    {Icon && <Icon className="h-5 w-5" />}
+                    {Icon && <Icon className="h-5 w-5" aria-hidden="true" />}
                   </Link>
                 );
               })}

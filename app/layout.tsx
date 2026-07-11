@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/providers/theme.provider";
 import { AuthProvider } from "@/context/auth.context";
 import { Toaster } from "@/components/ui/toaster";
 import { OrganizationSchema } from "@/components/seo/structured-data";
+import { SkipToContent } from "@/components/accessibility/skip-to-content";
 import { APP_NAME, APP_DESCRIPTION } from "@/constants";
 
 const inter = Inter({
@@ -58,6 +59,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className={inter.variable}>
       <body className="min-h-screen bg-background font-sans antialiased">
         <OrganizationSchema />
+        <SkipToContent />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

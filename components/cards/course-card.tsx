@@ -42,7 +42,7 @@ export function CourseCard({ course, showWishlist = true }: CourseCardProps) {
     : 0;
 
   return (
-    <Link href={`/courses/${course.slug}`}>
+    <Link href={`/courses/${course.slug}`} aria-label={`View course: ${course.title}`}>
       <Card className="group h-full overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1">
         {/* Course Thumbnail */}
         <div className="relative aspect-video overflow-hidden bg-muted">
@@ -60,6 +60,7 @@ export function CourseCard({ course, showWishlist = true }: CourseCardProps) {
               onClick={handleWishlistToggle}
               className="absolute top-3 right-3 p-2 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background transition-colors"
               aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
+              type="button"
             >
               <Heart
                 className={cn(
@@ -68,6 +69,7 @@ export function CourseCard({ course, showWishlist = true }: CourseCardProps) {
                     ? "fill-red-500 text-red-500"
                     : "text-muted-foreground hover:text-red-500"
                 )}
+                aria-hidden="true"
               />
             </button>
           )}
@@ -109,22 +111,22 @@ export function CourseCard({ course, showWishlist = true }: CourseCardProps) {
           {/* Rating & Students */}
           <div className="flex items-center justify-between text-sm">
             <div className="flex items-center space-x-1">
-              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" aria-hidden="true" />
               <span className="font-medium">{course.rating.toFixed(1)}</span>
               <span className="text-muted-foreground">
                 ({course.reviewCount.toLocaleString()})
               </span>
             </div>
             <div className="flex items-center space-x-1 text-muted-foreground">
-              <Users className="h-4 w-4" />
-              <span>{course.studentCount.toLocaleString()}</span>
+              <Users className="h-4 w-4" aria-hidden="true" />
+              <span>{course.studentCount.toLocaleString()} students</span>
             </div>
           </div>
 
           {/* Course Meta */}
           <div className="flex items-center justify-between text-sm text-muted-foreground">
             <div className="flex items-center space-x-1">
-              <Clock className="h-4 w-4" />
+              <Clock className="h-4 w-4" aria-hidden="true" />
               <span>{formatDuration(course.duration * 60)}</span>
             </div>
             <Badge variant="secondary" className={getLevelColor(course.level)}>
