@@ -67,7 +67,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-secondary/5 p-4">
+    <main id="main-content" className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-secondary/5 p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1 text-center">
           <CardTitle className="text-3xl font-bold">Welcome back</CardTitle>
@@ -77,7 +77,7 @@ export default function LoginPage() {
         </CardHeader>
 
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" aria-label="Login form">
             {/* Email Field */}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
@@ -87,10 +87,14 @@ export default function LoginPage() {
                 placeholder="name@example.com"
                 autoComplete="email"
                 disabled={isLoading}
+                aria-invalid={errors.email ? "true" : "false"}
+                aria-describedby={errors.email ? "email-error" : undefined}
                 {...register("email")}
               />
               {errors.email && (
-                <p className="text-sm text-destructive">{errors.email.message}</p>
+                <p id="email-error" className="text-sm text-destructive" role="alert">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
@@ -113,6 +117,8 @@ export default function LoginPage() {
                   placeholder="••••••••"
                   autoComplete="current-password"
                   disabled={isLoading}
+                  aria-invalid={errors.password ? "true" : "false"}
+                  aria-describedby={errors.password ? "password-error" : undefined}
                   {...register("password")}
                 />
                 <button
@@ -121,19 +127,19 @@ export default function LoginPage() {
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                   tabIndex={-1}
                   disabled={isLoading}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? (
-                    <EyeOff className="h-4 w-4" />
+                    <EyeOff className="h-4 w-4" aria-hidden="true" />
                   ) : (
-                    <Eye className="h-4 w-4" />
+                    <Eye className="h-4 w-4" aria-hidden="true" />
                   )}
-                  <span className="sr-only">
-                    {showPassword ? "Hide password" : "Show password"}
-                  </span>
                 </button>
               </div>
               {errors.password && (
-                <p className="text-sm text-destructive">{errors.password.message}</p>
+                <p id="password-error" className="text-sm text-destructive" role="alert">
+                  {errors.password.message}
+                </p>
               )}
             </div>
 
@@ -231,6 +237,6 @@ export default function LoginPage() {
           </div>
         </CardFooter>
       </Card>
-    </div>
+    </main>
   );
 }

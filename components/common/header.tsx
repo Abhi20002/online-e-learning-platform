@@ -55,6 +55,7 @@ export function Header() {
 
   return (
     <header
+      role="banner"
       className={cn(
         "sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-shadow",
         isScrolled && "shadow-sm"
@@ -63,17 +64,22 @@ export function Header() {
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
-            <GraduationCap className="h-8 w-8 text-primary" />
+          <Link
+            href="/"
+            className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+            aria-label="LearnHub Home"
+          >
+            <GraduationCap className="h-8 w-8 text-primary" aria-hidden="true" />
             <span className="text-xl font-bold hidden sm:inline-block">{APP_NAME}</span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-6">
+          <nav className="hidden md:flex items-center space-x-6" aria-label="Main navigation">
             {PUBLIC_NAV_ITEMS.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
+                aria-current={pathname === item.href ? "page" : undefined}
                 className={cn(
                   "text-sm font-medium transition-colors hover:text-primary",
                   pathname === item.href
@@ -87,15 +93,22 @@ export function Header() {
           </nav>
 
           {/* Search Bar */}
-          <form onSubmit={handleSearch} className="hidden lg:flex items-center flex-1 max-w-sm mx-6">
+          <form
+            onSubmit={handleSearch}
+            className="hidden lg:flex items-center flex-1 max-w-sm mx-6"
+            role="search"
+            aria-label="Search courses"
+          >
             <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
               <Input
                 type="search"
                 placeholder="Search courses..."
                 className="pl-10 pr-4"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                aria-label="Search courses"
+                autoComplete="off"
               />
             </div>
           </form>
@@ -105,7 +118,11 @@ export function Header() {
             {isAuthenticated && user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                  <Button
+                    variant="ghost"
+                    className="relative h-10 w-10 rounded-full"
+                    aria-label="User menu"
+                  >
                     <Avatar className="h-10 w-10">
                       <AvatarImage src={user.avatar} alt={user.name} />
                       <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
@@ -124,31 +141,31 @@ export function Header() {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
                     <Link href="/student/dashboard" className="cursor-pointer">
-                      <User className="mr-2 h-4 w-4" />
+                      <User className="mr-2 h-4 w-4" aria-hidden="true" />
                       Dashboard
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link href="/student/courses" className="cursor-pointer">
-                      <BookOpen className="mr-2 h-4 w-4" />
+                      <BookOpen className="mr-2 h-4 w-4" aria-hidden="true" />
                       My Courses
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link href="/student/wishlist" className="cursor-pointer">
-                      <Heart className="mr-2 h-4 w-4" />
+                      <Heart className="mr-2 h-4 w-4" aria-hidden="true" />
                       Wishlist
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link href="/student/certificates" className="cursor-pointer">
-                      <Award className="mr-2 h-4 w-4" />
+                      <Award className="mr-2 h-4 w-4" aria-hidden="true" />
                       Certificates
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-destructive">
-                    <LogOut className="mr-2 h-4 w-4" />
+                    <LogOut className="mr-2 h-4 w-4" aria-hidden="true" />
                     Logout
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -171,11 +188,13 @@ export function Header() {
               className="md:hidden"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle menu"
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-menu"
             >
               {isMobileMenuOpen ? (
-                <X className="h-6 w-6" />
+                <X className="h-6 w-6" aria-hidden="true" />
               ) : (
-                <Menu className="h-6 w-6" />
+                <Menu className="h-6 w-6" aria-hidden="true" />
               )}
             </Button>
           </div>
@@ -183,27 +202,40 @@ export function Header() {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden border-t py-4 animate-fade-in">
+          <div
+            id="mobile-menu"
+            className="md:hidden border-t py-4 animate-fade-in"
+            role="navigation"
+            aria-label="Mobile navigation"
+          >
             {/* Mobile Search */}
-            <form onSubmit={handleSearch} className="mb-4">
+            <form
+              onSubmit={handleSearch}
+              className="mb-4"
+              role="search"
+              aria-label="Search courses"
+            >
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
                 <Input
                   type="search"
                   placeholder="Search courses..."
                   className="pl-10 pr-4"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
+                  aria-label="Search courses"
+                  autoComplete="off"
                 />
               </div>
             </form>
 
             {/* Mobile Navigation Links */}
-            <nav className="flex flex-col space-y-3">
+            <nav className="flex flex-col space-y-3" aria-label="Mobile navigation menu">
               {PUBLIC_NAV_ITEMS.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
+                  aria-current={pathname === item.href ? "page" : undefined}
                   className={cn(
                     "text-sm font-medium transition-colors hover:text-primary px-2 py-1.5 rounded-md",
                     pathname === item.href

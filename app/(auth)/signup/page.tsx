@@ -78,7 +78,7 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-secondary/5 p-4">
+    <main id="main-content" className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-secondary/5 p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1 text-center">
           <CardTitle className="text-3xl font-bold">Create an account</CardTitle>
@@ -313,6 +313,6 @@ export default function SignupPage() {
           </div>
         </CardFooter>
       </Card>
-    </div>
+    </main>
   );
 }
