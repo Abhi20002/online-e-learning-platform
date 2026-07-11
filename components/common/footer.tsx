@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { GraduationCap } from "lucide-react";
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaYoutube } from "react-icons/fa";
 import { APP_NAME, FOOTER_LINKS, SOCIAL_LINKS } from "@/constants";
+import { Logo } from "@/components/common/logo";
 
 const socialIcons = {
   Facebook: FaFacebook,
@@ -17,11 +17,8 @@ export function Footer() {
       <div className="container-page grid grid-cols-1 gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         {/* Brand */}
         <div>
-          <Link href="/" className="flex items-center gap-2" aria-label="Skillbridge Home">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-500 text-white">
-              <GraduationCap className="h-5 w-5" aria-hidden="true" />
-            </span>
-            <span className="text-lg font-extrabold text-white">{APP_NAME}</span>
+          <Link href="/" className="inline-flex items-center pl-2" aria-label="Skillbridge Home">
+            <Logo dark />
           </Link>
           <p className="mt-4 text-sm leading-relaxed">
             Empowering learners worldwide with high-quality, accessible online education.

@@ -19,6 +19,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { CourseSchema, BreadcrumbSchema, ReviewSchema } from "@/components/seo/structured-data";
+import { CourseReviewsSkeleton } from "@/components/loading/course-reviews-skeleton";
 
 import { courses } from "@/mock/courses";
 import { reviews } from "@/mock/reviews";
@@ -30,7 +31,7 @@ import type { CourseCard as CourseCardType } from "@/types";
 const CourseReviews = dynamic(
   () => import("@/components/course/course-reviews").then((mod) => ({ default: mod.CourseReviews })),
   {
-    loading: () => import("@/components/loading/course-reviews-skeleton").then((mod) => <mod.CourseReviewsSkeleton />),
+    loading: () => <CourseReviewsSkeleton />,
     ssr: true,
   }
 );

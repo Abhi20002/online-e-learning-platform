@@ -12,10 +12,10 @@ import {
   LogOut,
   Menu,
   X,
-  GraduationCap,
   Bell,
 } from "lucide-react";
 import { useAuth } from "@/context/auth.context";
+import { Logo } from "@/components/common/logo";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getInitials, cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -109,14 +109,9 @@ export default function DashboardLayout({
         aria-label="Dashboard navigation"
       >
         <div className="flex h-18 items-center justify-between px-5 py-4">
-          <Link href="/" className="flex items-center gap-2" aria-label="Skillbridge Home">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-600 text-white">
-              <GraduationCap size={20} aria-hidden="true" />
-            </span>
-            <div className="leading-tight">
-              <p className="text-sm font-extrabold text-ink-900">Skillbridge</p>
-              <p className="text-xs text-ink-400">Student Dashboard</p>
-            </div>
+          <Link href="/" className="flex flex-col items-start gap-0.5 pl-2" aria-label="Skillbridge Home">
+            <Logo />
+            <span className="pl-3 text-xs text-ink-400">Student Dashboard</span>
           </Link>
           <button
             onClick={() => setIsMobileMenuOpen(false)}

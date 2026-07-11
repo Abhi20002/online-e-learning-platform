@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { GraduationCap, ShieldCheck, Sparkles, Star } from "lucide-react";
+import { ShieldCheck, Sparkles, Star } from "lucide-react";
 import { APP_NAME } from "@/constants";
+import { Logo } from "@/components/common/logo";
 
 export default function AuthLayout({
   children,
@@ -10,11 +11,8 @@ export default function AuthLayout({
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
       <main id="main-content" className="flex flex-col justify-center px-6 py-12 sm:px-12 lg:px-20">
-        <Link href="/" className="mb-10 flex items-center gap-2" aria-label={`${APP_NAME} Home`}>
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-600 text-white">
-            <GraduationCap size={20} aria-hidden="true" />
-          </span>
-          <span className="text-lg font-extrabold tracking-tight text-ink-900">{APP_NAME}</span>
+        <Link href="/" className="mb-10 inline-flex w-fit items-center pl-2" aria-label={`${APP_NAME} Home`}>
+          <Logo />
         </Link>
         <div className="mx-auto w-full max-w-sm">{children}</div>
       </main>

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { GraduationCap, Search, Menu, X, User, LogOut, BookOpen, Heart, Award } from "lucide-react";
+import { Search, Menu, X, User, LogOut, BookOpen, Heart, Award } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -16,7 +16,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/context/auth.context";
-import { PUBLIC_NAV_ITEMS, APP_NAME } from "@/constants";
+import { PUBLIC_NAV_ITEMS } from "@/constants";
+import { Logo } from "@/components/common/logo";
 import { cn, getInitials } from "@/lib/utils";
 
 export function Header() {
@@ -56,37 +57,34 @@ export function Header() {
     <header
       role="banner"
       className={cn(
-        "sticky top-0 z-50 w-full border-b transition-all duration-300",
+        "sticky top-0 z-50 w-full transition-all duration-300",
         isScrolled
-          ? "border-ink-300/20 bg-white/90 backdrop-blur-md shadow-soft"
-          : "border-transparent bg-white"
+          ? "border-b border-ink-300/20 bg-white/90 backdrop-blur-md shadow-soft"
+          : "border-transparent bg-transparent"
       )}
     >
       <div className="container-page flex h-18 items-center justify-between gap-6 py-3">
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-2 shrink-0"
+            className="flex shrink-0 items-center pl-2"
             aria-label="Skillbridge Home"
           >
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-600 text-white">
-              <GraduationCap className="h-5 w-5" aria-hidden="true" />
-            </span>
-            <span className="text-lg font-extrabold tracking-tight text-ink-900 hidden sm:inline-block">{APP_NAME}</span>
+            <Logo />
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
+          <nav className="hidden lg:flex items-center gap-10 pl-6" aria-label="Main navigation">
             {PUBLIC_NAV_ITEMS.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 aria-current={pathname === item.href ? "page" : undefined}
                 className={cn(
-                  "rounded-lg px-3.5 py-2 text-sm font-semibold transition-colors whitespace-nowrap",
+                  "text-sm transition-colors whitespace-nowrap",
                   pathname === item.href
-                    ? "text-brand-600 bg-brand-50"
-                    : "text-ink-700 hover:bg-surface-alt"
+                    ? "font-bold text-brand-600"
+                    : "font-medium text-ink-700 hover:text-brand-600"
                 )}
               >
                 {item.label}
@@ -97,11 +95,11 @@ export function Header() {
           {/* Search Bar */}
           <form
             onSubmit={handleSearch}
-            className="hidden md:flex flex-1 max-w-sm items-center rounded-xl border border-ink-300/40 bg-surface-alt px-3.5 py-2"
+            className="hidden md:flex flex-1 max-w-xs items-center rounded-full border border-ink-300/20 bg-white px-4 py-2 shadow-soft ml-auto"
             role="search"
             aria-label="Search courses"
           >
-            <Search className="h-4 w-4 text-ink-400" aria-hidden="true" />
+            <Search className="h-4 w-4 shrink-0 text-ink-400" aria-hidden="true" />
             <input
               type="search"
               placeholder="Search courses..."
@@ -114,7 +112,7 @@ export function Header() {
           </form>
 
           {/* Auth Buttons / User Menu */}
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-3 shrink-0">
             {isAuthenticated && user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -183,10 +181,14 @@ export function Header() {
               </DropdownMenu>
             ) : (
               <>
-                <Button asChild variant="ghost" size="sm" className="hidden md:inline-flex">
-                  <Link href="/login">Log In</Link>
+                <Button
+                  asChild
+                  variant="ghost"
+                  className="hidden rounded-full bg-white px-7 shadow-soft hover:bg-surface-alt md:inline-flex"
+                >
+                  <Link href="/login">Login</Link>
                 </Button>
-                <Button asChild size="sm" className="hidden md:inline-flex">
+                <Button asChild className="hidden rounded-full px-7 md:inline-flex">
                   <Link href="/signup">Sign Up</Link>
                 </Button>
               </>
@@ -259,10 +261,10 @@ export function Header() {
           {/* Mobile Auth Buttons */}
           {!isAuthenticated && (
             <div className="mt-4 flex flex-col gap-2">
-              <Button asChild variant="secondary" className="w-full">
+              <Button asChild variant="secondary" className="w-full rounded-full">
                 <Link href="/login">Log In</Link>
               </Button>
-              <Button asChild className="w-full">
+              <Button asChild className="w-full rounded-full">
                 <Link href="/signup">Sign Up</Link>
               </Button>
             </div>

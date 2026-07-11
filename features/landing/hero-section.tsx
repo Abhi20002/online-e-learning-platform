@@ -17,11 +17,11 @@ export function HeroSection() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-brand-50">
+    <section className="relative -mt-18 overflow-hidden bg-brand-50">
       {/* Soft radial tints */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_12%,rgba(104,81,247,0.14),transparent_45%),radial-gradient(circle_at_8%_85%,rgba(245,165,36,0.12),transparent_40%)]" />
 
-      <div className="container-page relative grid gap-14 pb-24 pt-14 lg:grid-cols-2 lg:gap-8 lg:pb-36 lg:pt-20">
+      <div className="container-page relative grid gap-14 pb-24 pt-32 lg:grid-cols-2 lg:gap-8 lg:pb-36 lg:pt-38">
         {/* Left Content */}
         <div className="flex flex-col justify-center">
           <span className="mb-6 inline-flex w-fit items-center gap-2 rounded-full bg-white px-4 py-1.5 text-xs font-semibold text-brand-700 shadow-soft">
