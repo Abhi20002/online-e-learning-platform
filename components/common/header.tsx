@@ -139,30 +139,41 @@ export function Header() {
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link href="/student/dashboard" className="cursor-pointer">
-                      <User className="mr-2 h-4 w-4" aria-hidden="true" />
-                      Dashboard
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/student/courses" className="cursor-pointer">
-                      <BookOpen className="mr-2 h-4 w-4" aria-hidden="true" />
-                      My Courses
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/student/wishlist" className="cursor-pointer">
-                      <Heart className="mr-2 h-4 w-4" aria-hidden="true" />
-                      Wishlist
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/student/certificates" className="cursor-pointer">
-                      <Award className="mr-2 h-4 w-4" aria-hidden="true" />
-                      Certificates
-                    </Link>
-                  </DropdownMenuItem>
+                  {user.role === "admin" ? (
+                    <DropdownMenuItem asChild>
+                      <Link href="/admin" className="cursor-pointer">
+                        <User className="mr-2 h-4 w-4" aria-hidden="true" />
+                        Admin Dashboard
+                      </Link>
+                    </DropdownMenuItem>
+                  ) : (
+                    <>
+                      <DropdownMenuItem asChild>
+                        <Link href="/dashboard" className="cursor-pointer">
+                          <User className="mr-2 h-4 w-4" aria-hidden="true" />
+                          Dashboard
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href="/dashboard/courses" className="cursor-pointer">
+                          <BookOpen className="mr-2 h-4 w-4" aria-hidden="true" />
+                          My Courses
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href="/dashboard/wishlist" className="cursor-pointer">
+                          <Heart className="mr-2 h-4 w-4" aria-hidden="true" />
+                          Wishlist
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href="/dashboard/certificates" className="cursor-pointer">
+                          <Award className="mr-2 h-4 w-4" aria-hidden="true" />
+                          Certificates
+                        </Link>
+                      </DropdownMenuItem>
+                    </>
+                  )}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-destructive">
                     <LogOut className="mr-2 h-4 w-4" aria-hidden="true" />

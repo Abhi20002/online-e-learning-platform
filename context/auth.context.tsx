@@ -8,7 +8,7 @@ interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  login: (data: LoginFormData) => Promise<{ success: boolean; error?: string }>;
+  login: (data: LoginFormData) => Promise<{ success: boolean; error?: string; user?: User }>;
   signup: (data: SignupFormData) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
   updateUser: (updates: Partial<User>) => void;
@@ -45,7 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (response.success && response.data) {
         setUser(response.data.user);
-        return { success: true };
+        return { success: true, user: response.data.user };
       }
 
       return {

@@ -50,8 +50,8 @@ export default function LoginPage() {
           description: "You have successfully logged in.",
         });
 
-        // Redirect to dashboard after successful login
-        router.push("/dashboard");
+        // Redirect based on role after successful login
+        router.push(result.user?.role === "admin" ? "/admin" : "/dashboard");
       } else {
         toast.error("Login failed", {
           description: result.error || "Please check your credentials and try again.",

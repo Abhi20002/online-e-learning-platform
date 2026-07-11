@@ -28,13 +28,24 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { courses } from "@/mock/courses";
+import { categories } from "@/mock/categories";
 import { SORT_OPTIONS, COURSES_PER_PAGE } from "@/constants";
 import type { CourseLevel, SortOption, CourseCard as CourseCardType } from "@/types";
+
+function getInitialCategories(categoryParam: string | null): string[] {
+  if (!categoryParam) return [];
+  const match = categories.find(
+    (c) => c.id === categoryParam || c.slug === categoryParam
+  );
+  return match ? [match.id] : [];
+}
 
 export default function CoursesPage() {
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "");
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(() =>
+    getInitialCategories(searchParams.get("category"))
+  );
   const [selectedLevels, setSelectedLevels] = useState<CourseLevel[]>([]);
   const [selectedRating, setSelectedRating] = useState<number | null>(null);
   const [selectedPriceRange, setSelectedPriceRange] = useState<{
