@@ -1,9 +1,10 @@
 import { MetadataRoute } from "next";
 import { courses } from "@/mock/courses";
 import { categories } from "@/mock/categories";
+import { APP_URL } from "@/constants";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://learnhub.com";
+  const baseUrl = APP_URL;
 
   // Static pages
   const staticPages = [

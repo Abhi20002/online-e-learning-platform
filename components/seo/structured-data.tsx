@@ -1,5 +1,6 @@
 import Script from "next/script";
 import type { Course } from "@/types";
+import { APP_URL } from "@/constants";
 
 // Organization Schema
 export function OrganizationSchema() {
@@ -8,8 +9,8 @@ export function OrganizationSchema() {
     "@type": "EducationalOrganization",
     "name": "LearnHub",
     "description": "Online learning platform offering professional courses in web development, data science, design, and more.",
-    "url": "https://learnhub.com",
-    "logo": "https://learnhub.com/logo.png",
+    "url": APP_URL,
+    "logo": `${APP_URL}/logo.png`,
     "sameAs": [
       "https://twitter.com/learnhub",
       "https://facebook.com/learnhub",
@@ -46,7 +47,7 @@ export function CourseSchema({ course }: CourseSchemaProps) {
     "provider": {
       "@type": "Organization",
       "name": "LearnHub",
-      "sameAs": "https://learnhub.com"
+      "sameAs": APP_URL
     },
     "instructor": {
       "@type": "Person",
@@ -64,7 +65,7 @@ export function CourseSchema({ course }: CourseSchemaProps) {
       "price": course.discountPrice || course.price,
       "priceCurrency": "USD",
       "availability": "https://schema.org/InStock",
-      "url": `https://learnhub.com/courses/${course.slug}`
+      "url": `${APP_URL}/courses/${course.slug}`
     },
     "educationalLevel": course.level,
     "inLanguage": course.language === "en" ? "English" : course.language,

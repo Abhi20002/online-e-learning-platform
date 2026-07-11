@@ -6,7 +6,7 @@ import type { CourseLevel, SortOption, UserRole } from "@/types";
 
 export const APP_NAME = "EduPlatform";
 export const APP_DESCRIPTION = "Learn Anything, Anytime - Online E-Learning Platform";
-export const APP_URL = "https://eduplatform.com";
+export const APP_URL = "https://online-e-learning-platform-n1rz.vercel.app";
 
 // ============================================
 // PAGINATION

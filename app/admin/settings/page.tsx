@@ -9,11 +9,12 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
+import { APP_URL } from "@/constants";
 
 export default function AdminSettingsPage() {
   const [settings, setSettings] = useState({
     siteName: "LearnHub",
-    siteUrl: "https://learnhub.com",
+    siteUrl: APP_URL,
     supportEmail: "support@learnhub.com",
     allowRegistration: true,
     requireEmailVerification: true,

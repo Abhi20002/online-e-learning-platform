@@ -23,6 +23,7 @@ import { CourseSchema, BreadcrumbSchema, ReviewSchema } from "@/components/seo/s
 import { courses } from "@/mock/courses";
 import { reviews } from "@/mock/reviews";
 import { formatPrice, formatDuration, getInitials, getLevelColor } from "@/lib/utils";
+import { APP_URL } from "@/constants";
 import type { CourseCard as CourseCardType } from "@/types";
 
 // Dynamic imports for below-the-fold components (Performance optimization)
@@ -65,7 +66,7 @@ export async function generateMetadata({ params }: CoursePageProps): Promise<Met
       title: course.title,
       description: course.shortDescription,
       type: "website",
-      url: `https://learnhub.com/courses/${course.slug}`,
+      url: `${APP_URL}/courses/${course.slug}`,
       images: [
         {
           url: course.thumbnail,
@@ -133,10 +134,10 @@ export default async function CoursePage({ params }: CoursePageProps) {
       <CourseSchema course={course} />
       <BreadcrumbSchema
         items={[
-          { name: "Home", url: "https://learnhub.com" },
-          { name: "Courses", url: "https://learnhub.com/courses" },
-          { name: course.category, url: `https://learnhub.com/courses?category=${course.categoryId}` },
-          { name: course.title, url: `https://learnhub.com/courses/${course.slug}` },
+          { name: "Home", url: APP_URL },
+          { name: "Courses", url: `${APP_URL}/courses` },
+          { name: course.category, url: `${APP_URL}/courses?category=${course.categoryId}` },
+          { name: course.title, url: `${APP_URL}/courses/${course.slug}` },
         ]}
       />
       {courseReviews.length > 0 && (

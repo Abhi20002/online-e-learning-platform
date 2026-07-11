@@ -11,6 +11,7 @@ import { FeaturedInstructorsSection } from "@/features/landing/featured-instruct
 import { TestimonialsSection } from "@/features/landing/testimonials-section";
 import { FAQSection } from "@/features/landing/faq-section";
 import { NewsletterSection } from "@/features/landing/newsletter-section";
+import { APP_URL } from "@/constants";
 
 export const metadata: Metadata = {
   title: "LearnHub - Online Courses & Professional Skills Training",
@@ -22,11 +23,11 @@ export const metadata: Metadata = {
     description: "Learn new skills with LearnHub. Access 1000+ courses taught by expert instructors.",
     type: "website",
     locale: "en_US",
-    url: "https://learnhub.com",
+    url: APP_URL,
     siteName: "LearnHub",
     images: [
       {
-        url: "https://learnhub.com/og-image.jpg",
+        url: `${APP_URL}/og-image.jpg`,
         width: 1200,
         height: 630,
         alt: "LearnHub - Online Learning Platform",
@@ -37,7 +38,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "LearnHub - Online Courses & Professional Skills Training",
     description: "Learn new skills with LearnHub. Access 1000+ courses taught by expert instructors.",
-    images: ["https://learnhub.com/og-image.jpg"],
+    images: [`${APP_URL}/og-image.jpg`],
   },
   robots: {
     index: true,

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import { APP_URL } from "@/constants";
 
 interface Certificate {
   id: string;
@@ -76,7 +77,7 @@ export default function CertificatesPage() {
   };
 
   const handleShare = (certificateId: string, courseTitle: string) => {
-    navigator.clipboard.writeText(`https://learnhub.com/certificates/${certificateId}`);
+    navigator.clipboard.writeText(`${APP_URL}/certificates/${certificateId}`);
     toast.success("Certificate link copied to clipboard");
   };
 
