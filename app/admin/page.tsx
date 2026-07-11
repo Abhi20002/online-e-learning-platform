@@ -5,6 +5,7 @@ import { ArrowRight, BookOpen, Users, DollarSign, TrendingUp, Eye } from "lucide
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { StatCard } from "@/components/common/stat-card";
 
 export default function AdminDashboardPage() {
   // Mock statistics
@@ -13,37 +14,29 @@ export default function AdminDashboardPage() {
       label: "Total Courses",
       value: "48",
       change: "+12%",
-      trend: "up",
       icon: BookOpen,
-      color: "text-blue-600",
-      bgColor: "bg-blue-100 dark:bg-blue-900/20",
+      tone: "brand" as const,
     },
     {
       label: "Total Students",
       value: "2,847",
       change: "+18%",
-      trend: "up",
       icon: Users,
-      color: "text-green-600",
-      bgColor: "bg-green-100 dark:bg-green-900/20",
+      tone: "green" as const,
     },
     {
       label: "Revenue",
       value: "$84,250",
       change: "+23%",
-      trend: "up",
       icon: DollarSign,
-      color: "text-purple-600",
-      bgColor: "bg-purple-100 dark:bg-purple-900/20",
+      tone: "coral" as const,
     },
     {
       label: "Enrollments",
       value: "1,234",
       change: "+8%",
-      trend: "up",
       icon: TrendingUp,
-      color: "text-orange-600",
-      bgColor: "bg-orange-100 dark:bg-orange-900/20",
+      tone: "amber" as const,
     },
   ];
 
@@ -123,40 +116,24 @@ export default function AdminDashboardPage() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold mb-2">Admin Dashboard</h1>
-        <p className="text-muted-foreground">
+        <h1 className="text-xl font-extrabold text-ink-900">Admin Dashboard</h1>
+        <p className="mt-1 text-sm text-ink-500">
           Overview of platform performance and activity
         </p>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {stats.map((stat) => {
-          const Icon = stat.icon;
-          return (
-            <Card key={stat.label}>
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-1">{stat.label}</p>
-                    <p className="text-2xl font-bold mb-1">{stat.value}</p>
-                    <div className="flex items-center gap-1">
-                      <span className="text-xs text-green-600 font-medium">
-                        {stat.change}
-                      </span>
-                      <span className="text-xs text-muted-foreground">
-                        vs last month
-                      </span>
-                    </div>
-                  </div>
-                  <div className={`${stat.bgColor} p-3 rounded-full`}>
-                    <Icon className={`h-6 w-6 ${stat.color}`} />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          );
-        })}
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        {stats.map((stat) => (
+          <StatCard
+            key={stat.label}
+            icon={stat.icon}
+            label={stat.label}
+            value={stat.value}
+            tone={stat.tone}
+            trend={`${stat.change} vs last month`}
+          />
+        ))}
       </div>
 
       {/* Two Column Layout */}
@@ -234,8 +211,8 @@ export default function AdminDashboardPage() {
 
       {/* Top Courses */}
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Top Performing Courses</CardTitle>
+        <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2">
+          <CardTitle className="font-bold text-ink-900">Top Performing Courses</CardTitle>
           <Link href="/admin/courses">
             <Button variant="ghost" size="sm">
               View All Courses
@@ -244,26 +221,26 @@ export default function AdminDashboardPage() {
           </Link>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
+          <div className="space-y-3">
             {topCourses.map((course, index) => (
               <div
                 key={course.id}
-                className="flex items-center gap-4 p-4 border rounded-lg hover:shadow-md transition-shadow"
+                className="flex items-center gap-3 rounded-xl p-2 hover:bg-surface-alt transition-colors"
               >
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                  <span className="text-sm font-bold text-primary">#{index + 1}</span>
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-100">
+                  <span className="text-sm font-bold text-brand-600">#{index + 1}</span>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <h4 className="font-semibold mb-1 truncate">{course.title}</h4>
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                <div className="min-w-0 flex-1">
+                  <h4 className="mb-0.5 truncate text-sm font-semibold text-ink-900">{course.title}</h4>
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-ink-500">
                     <span>{course.students.toLocaleString()} students</span>
-                    <span>•</span>
+                    <span className="hidden sm:inline">•</span>
                     <span>⭐ {course.rating}</span>
-                    <span>•</span>
-                    <span className="font-medium text-green-600">{course.revenue}</span>
+                    <span className="hidden sm:inline">•</span>
+                    <span className="font-medium text-emerald-600">{course.revenue}</span>
                   </div>
                 </div>
-                <Badge variant="success">Active</Badge>
+                <Badge variant="success" className="shrink-0">Active</Badge>
               </div>
             ))}
           </div>

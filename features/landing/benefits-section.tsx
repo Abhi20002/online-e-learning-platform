@@ -1,8 +1,7 @@
-import { GraduationCap, Clock, Infinity, Award, Users, DollarSign } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { GraduationCap, Clock, Infinity, Award, Users, DollarSign, type LucideIcon } from "lucide-react";
 import { BENEFITS_DATA } from "@/constants";
 
-const iconMap: Record<string, any> = {
+const iconMap: Record<string, LucideIcon> = {
   GraduationCap,
   Clock,
   Infinity,
@@ -13,32 +12,27 @@ const iconMap: Record<string, any> = {
 
 export function BenefitsSection() {
   return (
-    <section className="py-16 md:py-24">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Why Choose {process.env.NEXT_PUBLIC_APP_NAME || "EduPlatform"}
-          </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Discover the benefits that make us the preferred choice for online learning
+    <section className="bg-surface-alt py-20">
+      <div className="container-page">
+        <div className="mb-12 max-w-xl">
+          <p className="mb-2 text-sm font-bold uppercase tracking-wide text-brand-600">
+            Why {process.env.NEXT_PUBLIC_APP_NAME || "Skillbridge"}
           </p>
+          <h2 className="text-2xl font-extrabold text-ink-900 sm:text-3xl">
+            Built around how people actually learn
+          </h2>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {BENEFITS_DATA.map((benefit) => {
             const Icon = iconMap[benefit.icon] || Award;
             return (
-              <Card key={benefit.id} className="border-2 hover:border-primary/50 transition-colors">
-                <CardContent className="p-6 space-y-4">
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <Icon className="h-6 w-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-lg mb-2">{benefit.title}</h3>
-                    <p className="text-muted-foreground text-sm">{benefit.description}</p>
-                  </div>
-                </CardContent>
-              </Card>
+              <div key={benefit.id} className="rounded-2xl bg-white p-6 shadow-soft">
+                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-600 text-white">
+                  <Icon size={22} />
+                </span>
+                <h3 className="mt-5 font-bold text-ink-900">{benefit.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-ink-500">{benefit.description}</p>
+              </div>
             );
           })}
         </div>

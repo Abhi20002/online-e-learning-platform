@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Search, Filter } from "lucide-react";
+import { Search, Filter, BookOpen } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
+import { EmptyState } from "@/components/common/empty-state";
 
 interface EnrolledCourse {
   id: string;
@@ -137,8 +137,8 @@ export default function MyCoursesPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold mb-2">My Courses</h1>
-        <p className="text-muted-foreground">
+        <h1 className="text-lg font-extrabold text-ink-900">My Courses</h1>
+        <p className="mt-1 text-sm text-ink-500">
           Manage and track your learning progress
         </p>
       </div>
@@ -163,7 +163,7 @@ export default function MyCoursesPage() {
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:inline-grid">
+        <TabsList className="flex h-auto w-fit max-w-full flex-wrap justify-start gap-1">
           <TabsTrigger value="all">
             All ({counts.all})
           </TabsTrigger>
@@ -180,90 +180,84 @@ export default function MyCoursesPage() {
 
         <TabsContent value={activeTab} className="space-y-4">
           {filteredCourses.length > 0 ? (
-            <div className="space-y-4">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
               {filteredCourses.map((course) => (
                 <div
                   key={course.id}
-                  className="flex flex-col sm:flex-row gap-4 p-4 border rounded-lg hover:shadow-md transition-shadow"
+                  className="overflow-hidden rounded-2xl border border-ink-300/20 bg-white shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-lifted"
                 >
                   {/* Thumbnail */}
-                  <Link
-                    href={`/courses/${course.slug}`}
-                    className="flex-shrink-0 w-full sm:w-48 h-32 bg-muted rounded-md overflow-hidden"
-                  >
+                  <Link href={`/courses/${course.slug}`} className="block h-36 w-full overflow-hidden">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={course.thumbnail}
                       alt={course.title}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform"
+                      className="h-full w-full object-cover"
                     />
                   </Link>
 
                   {/* Content */}
-                  <div className="flex-1 min-w-0 space-y-3">
-                    <div>
-                      <div className="flex items-start justify-between gap-2 mb-1">
-                        <Link href={`/courses/${course.slug}`}>
-                          <h3 className="font-semibold hover:text-primary transition-colors">
-                            {course.title}
-                          </h3>
-                        </Link>
-                        <Badge
-                          variant={
-                            course.status === "completed"
-                              ? "success"
-                              : course.status === "in-progress"
-                              ? "default"
-                              : "secondary"
-                          }
-                          className="flex-shrink-0"
-                        >
-                          {course.status === "completed"
-                            ? "Completed"
+                  <div className="p-4">
+                    <div className="mb-2 flex items-center justify-between gap-2">
+                      <Badge variant="default">{course.category}</Badge>
+                      <Badge
+                        variant={
+                          course.status === "completed"
+                            ? "success"
                             : course.status === "in-progress"
-                            ? "In Progress"
-                            : "Not Started"}
-                        </Badge>
-                      </div>
-                      <p className="text-sm text-muted-foreground">
-                        {course.category} • {course.instructor}
-                      </p>
+                            ? "default"
+                            : "secondary"
+                        }
+                        className="flex-shrink-0"
+                      >
+                        {course.status === "completed"
+                          ? "Completed"
+                          : course.status === "in-progress"
+                          ? "In Progress"
+                          : "Not Started"}
+                      </Badge>
                     </div>
+                    <Link href={`/courses/${course.slug}`}>
+                      <h3 className="line-clamp-2 text-sm font-bold text-ink-900 hover:text-brand-600">
+                        {course.title}
+                      </h3>
+                    </Link>
+                    <p className="mt-1 text-xs text-ink-500">{course.instructor}</p>
 
                     {/* Progress */}
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium">
-                          {course.completedLectures}/{course.totalLectures} lectures
-                        </span>
-                        <span className="text-sm text-muted-foreground">{course.progress}%</span>
-                      </div>
-                      <Progress value={course.progress} />
+                    <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-surface-alt">
+                      <div
+                        className="h-full rounded-full bg-brand-600"
+                        style={{ width: `${course.progress}%` }}
+                      />
                     </div>
-
-                    {/* Meta */}
-                    <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-                      <span>{course.duration} hours total</span>
-                      <span>•</span>
-                      <span>Last accessed {course.lastAccessed}</span>
+                    <div className="mt-2 flex items-center justify-between text-xs text-ink-500">
+                      <span>{course.progress}% complete</span>
+                      <span>
+                        {course.completedLectures}/{course.totalLectures} lectures
+                      </span>
                     </div>
-                  </div>
+                    <p className="mt-1 text-xs text-ink-400">
+                      Last accessed {course.lastAccessed}
+                    </p>
 
-                  {/* Action Button */}
-                  <div className="flex-shrink-0 flex sm:flex-col gap-2">
-                    <Link href={`/courses/${course.slug}`} className="flex-1 sm:flex-initial">
-                      <Button className="w-full">
-                        {course.status === "completed"
-                          ? "Review"
-                          : course.status === "in-progress"
-                          ? "Continue"
-                          : "Start"}
-                      </Button>
+                    {/* Action Buttons */}
+                    <Link
+                      href={`/courses/${course.slug}`}
+                      className="mt-3 flex items-center justify-center gap-2 rounded-xl bg-brand-50 py-2 text-sm font-bold text-brand-700 hover:bg-brand-100"
+                    >
+                      {course.status === "completed"
+                        ? "Review"
+                        : course.status === "in-progress"
+                        ? "Continue"
+                        : "Start"}
                     </Link>
                     {course.status === "completed" && (
-                      <Link href="/dashboard/certificates" className="flex-1 sm:flex-initial">
-                        <Button variant="outline" className="w-full">
-                          Certificate
-                        </Button>
+                      <Link
+                        href="/dashboard/certificates"
+                        className="mt-2 flex items-center justify-center gap-2 rounded-xl border border-ink-300/40 bg-surface-alt py-2 text-sm font-bold text-ink-700 hover:bg-brand-100"
+                      >
+                        Certificate
                       </Link>
                     )}
                   </div>
@@ -271,12 +265,16 @@ export default function MyCoursesPage() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-16 border rounded-lg">
-              <p className="text-muted-foreground text-lg mb-4">No courses found</p>
-              <Link href="/courses">
-                <Button>Explore Courses</Button>
-              </Link>
-            </div>
+            <EmptyState
+              icon={BookOpen}
+              title="No courses found"
+              description="Try adjusting your search or filters"
+              action={
+                <Link href="/courses">
+                  <Button>Explore Courses</Button>
+                </Link>
+              }
+            />
           )}
         </TabsContent>
       </Tabs>

@@ -37,8 +37,8 @@ export function CourseReviews({ reviews, rating, reviewCount }: CourseReviewsPro
                 key={i}
                 className={`h-5 w-5 ${
                   i < Math.floor(rating)
-                    ? "fill-yellow-400 text-yellow-400"
-                    : "text-gray-300"
+                    ? "fill-amber-400 text-amber-400"
+                    : "text-muted-foreground/30"
                 }`}
                 aria-hidden="true"
               />
@@ -56,7 +56,7 @@ export function CourseReviews({ reviews, rating, reviewCount }: CourseReviewsPro
             return (
               <div key={stars} className="flex items-center gap-3">
                 <div className="flex items-center gap-1 w-20">
-                  <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" aria-hidden="true" />
+                  <Star className="h-4 w-4 fill-amber-400 text-amber-400" aria-hidden="true" />
                   <span className="text-sm">{stars}</span>
                 </div>
                 <Progress value={percentage} className="flex-1" />
@@ -90,8 +90,8 @@ export function CourseReviews({ reviews, rating, reviewCount }: CourseReviewsPro
                               key={i}
                               className={`h-4 w-4 ${
                                 i < review.rating
-                                  ? "fill-yellow-400 text-yellow-400"
-                                  : "text-gray-300"
+                                  ? "fill-amber-400 text-amber-400"
+                                  : "text-muted-foreground/30"
                               }`}
                               aria-hidden="true"
                             />

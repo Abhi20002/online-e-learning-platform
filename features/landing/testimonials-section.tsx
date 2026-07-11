@@ -1,16 +1,15 @@
 "use client";
 
-import { Star, Quote } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { getInitials } from "@/lib/utils";
+import { Quote } from "lucide-react";
+import { Rating } from "@/components/ui/rating";
+import { SectionHeading } from "./section-heading";
 
 const testimonials = [
   {
     id: "1",
     name: "Sarah Johnson",
     role: "Software Engineer",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
+    avatar: "https://i.pravatar.cc/150?img=4",
     rating: 5,
     comment:
       "The courses here transformed my career. The instructors are knowledgeable and the content is always up-to-date. Highly recommended!",
@@ -20,7 +19,7 @@ const testimonials = [
     id: "2",
     name: "Michael Chen",
     role: "Data Analyst",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Michael",
+    avatar: "https://i.pravatar.cc/150?img=14",
     rating: 5,
     comment:
       "I've tried many online learning platforms, but this one stands out. The quality of education and support is exceptional. Worth every penny!",
@@ -30,7 +29,7 @@ const testimonials = [
     id: "3",
     name: "Emma Williams",
     role: "UX Designer",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Emma",
+    avatar: "https://i.pravatar.cc/150?img=16",
     rating: 5,
     comment:
       "The UI/UX course was exactly what I needed. Practical projects and real-world examples made learning enjoyable and effective.",
@@ -40,60 +39,37 @@ const testimonials = [
 
 export function TestimonialsSection() {
   return (
-    <section className="py-16 md:py-24 bg-muted/30">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            What Our Students Say
-          </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Join thousands of satisfied learners who have transformed their careers
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <section className="bg-white py-20">
+      <div className="container-page">
+        <SectionHeading
+          eyebrow="Student stories"
+          title="What our learners say"
+          description="Real outcomes from people who finished what they started."
+        />
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {testimonials.map((testimonial) => (
-            <Card key={testimonial.id} className="relative">
-              <CardContent className="p-6 space-y-4">
-                {/* Quote Icon */}
-                <Quote className="h-10 w-10 text-primary/20" />
-
-                {/* Rating */}
-                <div className="flex gap-1">
-                  {Array.from({ length: testimonial.rating }).map((_, i) => (
-                    <Star
-                      key={i}
-                      className="h-4 w-4 fill-yellow-400 text-yellow-400"
-                    />
-                  ))}
+            <div
+              key={testimonial.id}
+              className="flex h-full flex-col rounded-2xl border border-ink-300/20 bg-white p-6 shadow-soft"
+            >
+              <Quote size={28} className="mb-3 text-brand-200" />
+              <p className="flex-1 text-sm leading-relaxed text-ink-700">
+                &ldquo;{testimonial.comment}&rdquo;
+              </p>
+              <div className="mt-5 flex items-center gap-3 border-t border-ink-300/15 pt-4">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={testimonial.avatar}
+                  alt={testimonial.name}
+                  className="h-11 w-11 rounded-full object-cover"
+                />
+                <div className="flex-1">
+                  <p className="text-sm font-bold text-ink-900">{testimonial.name}</p>
+                  <p className="text-xs text-ink-500">{testimonial.role}</p>
                 </div>
-
-                {/* Comment */}
-                <p className="text-muted-foreground italic">
-                  &ldquo;{testimonial.comment}&rdquo;
-                </p>
-
-                {/* Course */}
-                <p className="text-sm text-muted-foreground">
-                  <span className="font-medium text-foreground">Course:</span>{" "}
-                  {testimonial.courseName}
-                </p>
-
-                {/* Author */}
-                <div className="flex items-center gap-3 pt-4 border-t">
-                  <Avatar>
-                    <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
-                    <AvatarFallback>
-                      {getInitials(testimonial.name)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="font-semibold">{testimonial.name}</p>
-                    <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                <Rating value={testimonial.rating} showValue={false} size={13} />
+              </div>
+            </div>
           ))}
         </div>
       </div>

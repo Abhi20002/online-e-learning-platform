@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { EmptyState } from "@/components/common/empty-state";
 import { toast } from "sonner";
 import { APP_URL } from "@/constants";
 
@@ -85,9 +86,9 @@ export default function CertificatesPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold mb-2">My Certificates</h1>
-        <p className="text-muted-foreground">
-          {certificates.length} certificates earned
+        <h1 className="text-lg font-extrabold text-ink-900">Your Certificates</h1>
+        <p className="mt-1 text-sm text-ink-500">
+          {certificates.length} verified certificates earned
         </p>
       </div>
 
@@ -107,32 +108,29 @@ export default function CertificatesPage() {
 
       {/* Certificates Grid */}
       {filteredCertificates.length > 0 ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           {filteredCertificates.map((cert) => (
-            <Card key={cert.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-              <div className="h-3 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
-              <CardContent className="p-6">
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
-                    <Award className="h-8 w-8 text-white" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <Badge variant="success" className="mb-2">
-                      Verified
-                    </Badge>
-                    <h3 className="font-semibold text-lg mb-1 line-clamp-2">
-                      {cert.courseTitle}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      Instructor: {cert.instructor}
-                    </p>
-                  </div>
+            <Card key={cert.id} className="overflow-hidden">
+              <div className="relative flex h-36 items-center justify-center bg-brand-700 p-5">
+                <Award size={40} className="text-amber-accent" />
+                <span className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(255,255,255,0.15),transparent_50%)]" />
+              </div>
+              <CardContent className="p-5">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-brand-600">
+                    Certificate of Completion
+                  </p>
+                  <Badge variant="success">Verified</Badge>
                 </div>
+                <h3 className="mt-1 font-bold text-ink-900">{cert.courseTitle}</h3>
+                <p className="mt-1 text-sm text-ink-500">
+                  Instructor: {cert.instructor}
+                </p>
 
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">Completed</span>
-                    <span className="font-medium">
+                <div className="mt-3 space-y-1.5 text-sm">
+                  <div className="flex items-center justify-between">
+                    <span className="text-ink-500">Issued</span>
+                    <span className="font-medium text-ink-800">
                       {new Date(cert.completedDate).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'long',
@@ -140,14 +138,14 @@ export default function CertificatesPage() {
                       })}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">Certificate No.</span>
-                    <span className="font-mono text-xs">{cert.certificateNumber}</span>
+                  <div className="flex items-center justify-between">
+                    <span className="text-ink-500">Certificate No.</span>
+                    <span className="font-mono text-xs text-ink-700">{cert.certificateNumber}</span>
                   </div>
                   {cert.validUntil && (
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Valid Until</span>
-                      <span className="font-medium">
+                    <div className="flex items-center justify-between">
+                      <span className="text-ink-500">Valid Until</span>
+                      <span className="font-medium text-ink-800">
                         {new Date(cert.validUntil).toLocaleDateString('en-US', {
                           year: 'numeric',
                           month: 'long',
@@ -158,57 +156,58 @@ export default function CertificatesPage() {
                   )}
                 </div>
 
-                <div className="flex gap-2">
+                <div className="mt-4 flex gap-2">
                   <Button
                     size="sm"
+                    variant="secondary"
                     onClick={() => handleDownload(cert.id, cert.courseTitle)}
-                    className="flex-1"
+                    className="w-full"
                   >
-                    <Download className="h-4 w-4 mr-2" />
+                    <Download className="h-3.5 w-3.5" />
                     Download
                   </Button>
                   <Button
                     size="sm"
-                    variant="outline"
+                    variant="secondary"
                     onClick={() => handleShare(cert.id, cert.courseTitle)}
-                    className="flex-1"
+                    className="w-full"
                   >
-                    <Share2 className="h-4 w-4 mr-2" />
+                    <Share2 className="h-3.5 w-3.5" />
                     Share
                   </Button>
                 </div>
 
-                <Link href={`/courses/${cert.courseSlug}`} className="block mt-3">
-                  <Button variant="ghost" size="sm" className="w-full">
-                    View Course
-                  </Button>
+                <Link
+                  href={`/courses/${cert.courseSlug}`}
+                  className="mt-3 flex items-center justify-center rounded-xl bg-brand-50 py-2 text-sm font-bold text-brand-700 hover:bg-brand-100"
+                >
+                  View Course
                 </Link>
               </CardContent>
             </Card>
           ))}
         </div>
       ) : certificates.length === 0 ? (
-        <div className="text-center py-16 border rounded-lg">
-          <div className="max-w-md mx-auto">
-            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-muted flex items-center justify-center">
-              <Award className="h-10 w-10 text-muted-foreground" />
-            </div>
-            <h3 className="text-lg font-semibold mb-2">No certificates yet</h3>
-            <p className="text-muted-foreground mb-6">
-              Complete courses to earn verified certificates
-            </p>
+        <EmptyState
+          icon={Award}
+          title="No certificates yet"
+          description="Complete courses to earn verified certificates"
+          action={
             <Link href="/dashboard/courses">
               <Button>View My Courses</Button>
             </Link>
-          </div>
-        </div>
+          }
+        />
       ) : (
-        <div className="text-center py-16 border rounded-lg">
-          <p className="text-muted-foreground text-lg mb-4">No certificates match your search</p>
-          <Button onClick={() => setSearchQuery("")} variant="outline">
-            Clear Search
-          </Button>
-        </div>
+        <EmptyState
+          icon={Search}
+          title="No certificates match your search"
+          action={
+            <Button onClick={() => setSearchQuery("")} variant="outline">
+              Clear Search
+            </Button>
+          }
+        />
       )}
     </div>
   );

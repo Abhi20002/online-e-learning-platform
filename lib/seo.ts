@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import { APP_URL } from "@/constants";
 
 const siteConfig = {
-  name: "LearnHub",
-  description: "Learn new skills with LearnHub. Access 1000+ courses in web development, data science, design, marketing and more.",
+  name: "Skillbridge",
+  description: "Learn new skills with Skillbridge. Access 1000+ courses in web development, data science, design, marketing and more.",
   url: APP_URL,
   ogImage: `${APP_URL}/og-image.jpg`,
   links: {
-    twitter: "https://twitter.com/learnhub",
-    github: "https://github.com/learnhub",
+    twitter: "https://twitter.com/skillbridge",
+    github: "https://github.com/skillbridge",
   },
 };
 
@@ -42,10 +42,10 @@ export function constructMetadata({
     ],
     authors: [
       {
-        name: "LearnHub",
+        name: "Skillbridge",
       },
     ],
-    creator: "LearnHub",
+    creator: "Skillbridge",
     openGraph: {
       type: "website",
       locale: "en_US",
@@ -67,7 +67,7 @@ export function constructMetadata({
       title,
       description,
       images: [image],
-      creator: "@learnhub",
+      creator: "@skillbridge",
     },
     icons,
     metadataBase: new URL(siteConfig.url),

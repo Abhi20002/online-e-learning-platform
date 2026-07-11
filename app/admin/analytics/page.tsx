@@ -38,8 +38,8 @@ export default function AdminAnalyticsPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold mb-2">Analytics</h1>
-        <p className="text-muted-foreground">
+        <h1 className="text-xl font-extrabold text-ink-900">Analytics</h1>
+        <p className="mt-1 text-sm text-ink-500">
           Platform performance metrics and insights
         </p>
       </div>
@@ -78,7 +78,7 @@ export default function AdminAnalyticsPage() {
           <CardTitle>Revenue Overview</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-[300px] flex items-center justify-center text-muted-foreground">
+          <div className="h-[300px] flex items-center justify-center text-muted-foreground rounded-xl bg-muted/40">
             Chart visualization would go here
           </div>
         </CardContent>

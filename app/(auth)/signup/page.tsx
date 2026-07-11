@@ -5,21 +5,13 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2, User, Mail, Lock, Phone } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { useAuth } from "@/context/auth.context";
 import { signupSchema, type SignupFormValues } from "@/lib/validations/auth";
 
@@ -58,7 +50,7 @@ export default function SignupPage() {
 
       if (result.success) {
         toast.success("Account created!", {
-          description: "Welcome to EduPlatform. Let's start learning!",
+          description: "Welcome to Skillbridge. Let's start learning!",
         });
 
         // Redirect to dashboard after successful signup
@@ -78,28 +70,28 @@ export default function SignupPage() {
   };
 
   return (
-    <main id="main-content" className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-secondary/5 p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-3xl font-bold">Create an account</CardTitle>
-          <CardDescription>
-            Enter your information to get started
-          </CardDescription>
-        </CardHeader>
+    <>
+      <h1 className="text-2xl font-extrabold text-ink-900">Create an account</h1>
+      <p className="mt-2 text-sm text-ink-500">
+        Start learning with a free account today.
+      </p>
 
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-4">
             {/* Full Name Field */}
             <div className="space-y-2">
               <Label htmlFor="name">Full Name</Label>
-              <Input
-                id="name"
-                type="text"
-                placeholder="John Doe"
-                autoComplete="name"
-                disabled={isLoading}
-                {...register("name")}
-              />
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="John Doe"
+                  autoComplete="name"
+                  disabled={isLoading}
+                  className="pl-10"
+                  {...register("name")}
+                />
+              </div>
               {errors.name && (
                 <p className="text-sm text-destructive">{errors.name.message}</p>
               )}
@@ -108,14 +100,18 @@ export default function SignupPage() {
             {/* Email Field */}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="name@example.com"
-                autoComplete="email"
-                disabled={isLoading}
-                {...register("email")}
-              />
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="name@example.com"
+                  autoComplete="email"
+                  disabled={isLoading}
+                  className="pl-10"
+                  {...register("email")}
+                />
+              </div>
               {errors.email && (
                 <p className="text-sm text-destructive">{errors.email.message}</p>
               )}
@@ -124,14 +120,18 @@ export default function SignupPage() {
             {/* Mobile Field */}
             <div className="space-y-2">
               <Label htmlFor="mobile">Mobile Number</Label>
-              <Input
-                id="mobile"
-                type="tel"
-                placeholder="1234567890"
-                autoComplete="tel"
-                disabled={isLoading}
-                {...register("mobile")}
-              />
+              <div className="relative">
+                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                <Input
+                  id="mobile"
+                  type="tel"
+                  placeholder="1234567890"
+                  autoComplete="tel"
+                  disabled={isLoading}
+                  className="pl-10"
+                  {...register("mobile")}
+                />
+              </div>
               {errors.mobile && (
                 <p className="text-sm text-destructive">{errors.mobile.message}</p>
               )}
@@ -141,12 +141,14 @@ export default function SignupPage() {
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   autoComplete="new-password"
                   disabled={isLoading}
+                  className="pl-10"
                   {...register("password")}
                 />
                 <button
@@ -175,12 +177,14 @@ export default function SignupPage() {
             <div className="space-y-2">
               <Label htmlFor="confirmPassword">Confirm Password</Label>
               <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
                 <Input
                   id="confirmPassword"
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="••••••••"
                   autoComplete="new-password"
                   disabled={isLoading}
+                  className="pl-10"
                   {...register("confirmPassword")}
                 />
                 <button
@@ -258,21 +262,17 @@ export default function SignupPage() {
             </Button>
 
             {/* Divider */}
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card px-2 text-muted-foreground">
-                  Or sign up with
-                </span>
-              </div>
+            <div className="flex items-center gap-3 py-1">
+              <span className="h-px flex-1 bg-ink-300/30" />
+              <span className="text-xs text-ink-400">or sign up with</span>
+              <span className="h-px flex-1 bg-ink-300/30" />
             </div>
 
             {/* Social Signup (UI Only) */}
             <Button
               type="button"
-              variant="outline"
+              variant="secondary"
+              size="lg"
               className="w-full"
               disabled={isLoading}
               onClick={() =>
@@ -301,18 +301,14 @@ export default function SignupPage() {
               </svg>
               Continue with Google
             </Button>
-          </form>
-        </CardContent>
+      </form>
 
-        <CardFooter className="flex flex-col space-y-4">
-          <div className="text-sm text-center text-muted-foreground">
-            Already have an account?{" "}
-            <Link href="/login" className="text-primary hover:underline font-medium">
-              Sign in
-            </Link>
-          </div>
-        </CardFooter>
-      </Card>
-    </main>
+      <p className="mt-8 text-center text-sm text-ink-500">
+        Already have an account?{" "}
+        <Link href="/login" className="font-semibold text-brand-600 hover:underline">
+          Log in
+        </Link>
+      </p>
+    </>
   );
 }

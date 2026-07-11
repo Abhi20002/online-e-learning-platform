@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Search, Trash2 } from "lucide-react";
+import { Search, Trash2, Heart } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { CourseCard } from "@/components/cards/course-card";
+import { EmptyState } from "@/components/common/empty-state";
 import { courses } from "@/mock/courses";
 import type { CourseCard as CourseCardType } from "@/types";
 import { toast } from "sonner";
@@ -55,10 +56,10 @@ export default function WishlistPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-bold mb-2">My Wishlist</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-lg font-extrabold text-ink-900">My Wishlist</h1>
+          <p className="mt-1 text-sm text-ink-500">
             {wishlistCourses.length} courses saved for later
           </p>
         </div>
@@ -90,11 +91,11 @@ export default function WishlistPage() {
           </div>
 
           {/* Summary Card */}
-          <div className="bg-muted/30 border rounded-lg p-6">
+          <div className="rounded-2xl border border-border/60 bg-background p-6 shadow-soft">
             <div className="flex items-center justify-between mb-4">
               <div>
                 <p className="text-sm text-muted-foreground mb-1">Total Value</p>
-                <p className="text-3xl font-bold">${totalPrice.toFixed(2)}</p>
+                <p className="text-3xl font-extrabold">${totalPrice.toFixed(2)}</p>
               </div>
               <Button size="lg">
                 Enroll in All Courses
@@ -117,7 +118,7 @@ export default function WishlistPage() {
                 variant="ghost"
                 size="sm"
                 onClick={() => handleRemoveFromWishlist(course.id)}
-                className="absolute top-2 right-2 bg-background/80 backdrop-blur hover:bg-background"
+                className="absolute top-2 right-2 bg-background/90 shadow-soft hover:bg-background"
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
@@ -125,29 +126,26 @@ export default function WishlistPage() {
           ))}
         </div>
       ) : wishlistCourses.length === 0 ? (
-        <div className="text-center py-16 border rounded-lg">
-          <div className="max-w-md mx-auto">
-            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-muted flex items-center justify-center">
-              <svg className="h-10 w-10 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-            </div>
-            <h3 className="text-lg font-semibold mb-2">Your wishlist is empty</h3>
-            <p className="text-muted-foreground mb-6">
-              Start adding courses you're interested in to keep track of them
-            </p>
+        <EmptyState
+          icon={Heart}
+          title="Your wishlist is empty"
+          description="Start adding courses you're interested in to keep track of them"
+          action={
             <Link href="/courses">
               <Button>Browse Courses</Button>
             </Link>
-          </div>
-        </div>
+          }
+        />
       ) : (
-        <div className="text-center py-16 border rounded-lg">
-          <p className="text-muted-foreground text-lg mb-4">No courses match your search</p>
-          <Button onClick={() => setSearchQuery("")} variant="outline">
-            Clear Search
-          </Button>
-        </div>
+        <EmptyState
+          icon={Search}
+          title="No courses match your search"
+          action={
+            <Button onClick={() => setSearchQuery("")} variant="outline">
+              Clear Search
+            </Button>
+          }
+        />
       )}
     </div>
   );

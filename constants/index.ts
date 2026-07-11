@@ -4,7 +4,7 @@ import type { CourseLevel, SortOption, UserRole } from "@/types";
 // APPLICATION CONFIG
 // ============================================
 
-export const APP_NAME = "EduPlatform";
+export const APP_NAME = "Skillbridge";
 export const APP_DESCRIPTION = "Learn Anything, Anytime - Online E-Learning Platform";
 export const APP_URL = "https://online-e-learning-platform-n1rz.vercel.app";
 
@@ -70,9 +70,6 @@ export const USER_ROLES: Array<{ value: UserRole; label: string }> = [
 export const PUBLIC_NAV_ITEMS = [
   { label: "Home", href: "/" },
   { label: "Courses", href: "/courses" },
-  { label: "Categories", href: "/categories" },
-  { label: "Become Instructor", href: "/become-instructor" },
-  { label: "About", href: "/about" },
 ];
 
 export const STUDENT_NAV_ITEMS = [
@@ -100,7 +97,6 @@ export const ADMIN_NAV_ITEMS = [
 
 export const FOOTER_LINKS = {
   company: [
-    { label: "About Us", href: "/about" },
     { label: "Careers", href: "/careers" },
     { label: "Blog", href: "/blog" },
     { label: "Contact", href: "/contact" },
@@ -112,7 +108,6 @@ export const FOOTER_LINKS = {
     { label: "Cookie Policy", href: "/cookies" },
   ],
   resources: [
-    { label: "Become Instructor", href: "/become-instructor" },
     { label: "Teaching Center", href: "/teaching" },
     { label: "Partnerships", href: "/partnerships" },
     { label: "Affiliates", href: "/affiliates" },

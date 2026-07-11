@@ -5,14 +5,13 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2, Mail, Lock } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/context/auth.context";
 import { loginSchema, type LoginFormValues } from "@/lib/validations/auth";
 
@@ -67,30 +66,30 @@ export default function LoginPage() {
   };
 
   return (
-    <main id="main-content" className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-secondary/5 p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-3xl font-bold">Welcome back</CardTitle>
-          <CardDescription>
-            Enter your credentials to access your account
-          </CardDescription>
-        </CardHeader>
+    <>
+      <h1 className="text-2xl font-extrabold text-ink-900">Welcome back</h1>
+      <p className="mt-2 text-sm text-ink-500">
+        Log in to continue your learning journey.
+      </p>
 
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" aria-label="Login form">
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-4" aria-label="Login form">
             {/* Email Field */}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="name@example.com"
-                autoComplete="email"
-                disabled={isLoading}
-                aria-invalid={errors.email ? "true" : "false"}
-                aria-describedby={errors.email ? "email-error" : undefined}
-                {...register("email")}
-              />
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="name@example.com"
+                  autoComplete="email"
+                  disabled={isLoading}
+                  className="pl-10"
+                  aria-invalid={errors.email ? "true" : "false"}
+                  aria-describedby={errors.email ? "email-error" : undefined}
+                  {...register("email")}
+                />
+              </div>
               {errors.email && (
                 <p id="email-error" className="text-sm text-destructive" role="alert">
                   {errors.email.message}
@@ -104,19 +103,21 @@ export default function LoginPage() {
                 <Label htmlFor="password">Password</Label>
                 <Link
                   href="/forgot-password"
-                  className="text-sm text-primary hover:underline"
+                  className="text-sm font-semibold text-brand-600 hover:underline"
                   tabIndex={-1}
                 >
                   Forgot password?
                 </Link>
               </div>
               <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   autoComplete="current-password"
                   disabled={isLoading}
+                  className="pl-10"
                   aria-invalid={errors.password ? "true" : "false"}
                   aria-describedby={errors.password ? "password-error" : undefined}
                   {...register("password")}
@@ -179,21 +180,17 @@ export default function LoginPage() {
             </Button>
 
             {/* Divider */}
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card px-2 text-muted-foreground">
-                  Or continue with
-                </span>
-              </div>
+            <div className="flex items-center gap-3 py-1">
+              <span className="h-px flex-1 bg-ink-300/30" />
+              <span className="text-xs text-ink-400">or continue with</span>
+              <span className="h-px flex-1 bg-ink-300/30" />
             </div>
 
             {/* Social Login (UI Only) */}
             <Button
               type="button"
-              variant="outline"
+              variant="secondary"
+              size="lg"
               className="w-full"
               disabled={isLoading}
               onClick={() =>
@@ -222,21 +219,17 @@ export default function LoginPage() {
               </svg>
               Continue with Google
             </Button>
-          </form>
-        </CardContent>
+      </form>
 
-        <CardFooter className="flex flex-col space-y-4">
-          <div className="text-sm text-center text-muted-foreground">
-            Don&apos;t have an account?{" "}
-            <Link
-              href="/signup"
-              className="text-primary hover:underline font-medium"
-            >
-              Sign up
-            </Link>
-          </div>
-        </CardFooter>
-      </Card>
-    </main>
+      <p className="mt-8 text-center text-sm text-ink-500">
+        Don&apos;t have an account?{" "}
+        <Link
+          href="/signup"
+          className="font-semibold text-brand-600 hover:underline"
+        >
+          Sign up
+        </Link>
+      </p>
+    </>
   );
 }

@@ -14,30 +14,30 @@ import { NewsletterSection } from "@/features/landing/newsletter-section";
 import { APP_URL } from "@/constants";
 
 export const metadata: Metadata = {
-  title: "LearnHub - Online Courses & Professional Skills Training",
-  description: "Learn new skills with LearnHub. Access 1000+ courses in web development, data science, design, marketing and more. Expert instructors, lifetime access, certificates included.",
+  title: "Skillbridge - Online Courses & Professional Skills Training",
+  description: "Learn new skills with Skillbridge. Access 1000+ courses in web development, data science, design, marketing and more. Expert instructors, lifetime access, certificates included.",
   keywords: ["online courses", "e-learning", "web development", "data science", "professional training", "skill development", "online education"],
-  authors: [{ name: "LearnHub" }],
+  authors: [{ name: "Skillbridge" }],
   openGraph: {
-    title: "LearnHub - Online Courses & Professional Skills Training",
-    description: "Learn new skills with LearnHub. Access 1000+ courses taught by expert instructors.",
+    title: "Skillbridge - Online Courses & Professional Skills Training",
+    description: "Learn new skills with Skillbridge. Access 1000+ courses taught by expert instructors.",
     type: "website",
     locale: "en_US",
     url: APP_URL,
-    siteName: "LearnHub",
+    siteName: "Skillbridge",
     images: [
       {
         url: `${APP_URL}/og-image.jpg`,
         width: 1200,
         height: 630,
-        alt: "LearnHub - Online Learning Platform",
+        alt: "Skillbridge - Online Learning Platform",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "LearnHub - Online Courses & Professional Skills Training",
-    description: "Learn new skills with LearnHub. Access 1000+ courses taught by expert instructors.",
+    title: "Skillbridge - Online Courses & Professional Skills Training",
+    description: "Learn new skills with Skillbridge. Access 1000+ courses taught by expert instructors.",
     images: [`${APP_URL}/og-image.jpg`],
   },
   robots: {

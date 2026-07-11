@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { Code, Smartphone, BarChart, Palette, Briefcase, TrendingUp, Camera, Music } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Code, Smartphone, BarChart, Palette, Briefcase, TrendingUp, Camera, Music, type LucideIcon } from "lucide-react";
+import { SectionHeading } from "./section-heading";
 import { categories } from "@/mock/categories";
 
-const iconMap: Record<string, any> = {
+const iconMap: Record<string, LucideIcon> = {
   Code,
   Smartphone,
   BarChart,
@@ -19,37 +19,29 @@ export function CategoriesSection() {
   const displayCategories = categories.slice(0, 8);
 
   return (
-    <section className="py-16 md:py-24 bg-muted/30">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Explore Categories
-          </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Browse courses by category and find the perfect learning path for you
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+    <section className="bg-white py-20">
+      <div className="container-page">
+        <SectionHeading
+          eyebrow="Explore"
+          title="Browse by Category"
+          description="Find the right path for wherever you're headed next."
+        />
+        <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
           {displayCategories.map((category) => {
             const Icon = iconMap[category.icon] || Code;
             return (
-              <Link key={category.id} href={`/courses?category=${category.slug}`}>
-                <Card className="group hover:shadow-lg hover:-translate-y-1 transition-all">
-                  <CardContent className="p-6 text-center space-y-3">
-                    <div className="w-14 h-14 mx-auto rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                      <Icon className="h-7 w-7 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold mb-1 group-hover:text-primary transition-colors">
-                        {category.name}
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        {category.courseCount} courses
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
+              <Link
+                key={category.id}
+                href={`/courses?category=${category.slug}`}
+                className="flex cursor-pointer flex-col items-start gap-4 rounded-2xl border border-ink-300/20 bg-white p-5 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-lifted"
+              >
+                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-100 text-brand-600">
+                  <Icon size={22} />
+                </span>
+                <div>
+                  <h3 className="font-bold text-ink-900">{category.name}</h3>
+                  <p className="text-sm text-ink-500">{category.courseCount} courses</p>
+                </div>
               </Link>
             );
           })}

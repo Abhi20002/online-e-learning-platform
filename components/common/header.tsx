@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { GraduationCap, Search, Menu, X, User, LogOut, BookOpen, Heart, Award } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -57,34 +56,37 @@ export function Header() {
     <header
       role="banner"
       className={cn(
-        "sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-shadow",
-        isScrolled && "shadow-sm"
+        "sticky top-0 z-50 w-full border-b transition-all duration-300",
+        isScrolled
+          ? "border-ink-300/20 bg-white/90 backdrop-blur-md shadow-soft"
+          : "border-transparent bg-white"
       )}
     >
-      <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between">
+      <div className="container-page flex h-18 items-center justify-between gap-6 py-3">
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
-            aria-label="LearnHub Home"
+            className="flex items-center gap-2 shrink-0"
+            aria-label="Skillbridge Home"
           >
-            <GraduationCap className="h-8 w-8 text-primary" aria-hidden="true" />
-            <span className="text-xl font-bold hidden sm:inline-block">{APP_NAME}</span>
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-600 text-white">
+              <GraduationCap className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <span className="text-lg font-extrabold tracking-tight text-ink-900 hidden sm:inline-block">{APP_NAME}</span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-6" aria-label="Main navigation">
+          <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
             {PUBLIC_NAV_ITEMS.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 aria-current={pathname === item.href ? "page" : undefined}
                 className={cn(
-                  "text-sm font-medium transition-colors hover:text-primary",
+                  "rounded-lg px-3.5 py-2 text-sm font-semibold transition-colors whitespace-nowrap",
                   pathname === item.href
-                    ? "text-primary"
-                    : "text-muted-foreground"
+                    ? "text-brand-600 bg-brand-50"
+                    : "text-ink-700 hover:bg-surface-alt"
                 )}
               >
                 {item.label}
@@ -95,26 +97,24 @@ export function Header() {
           {/* Search Bar */}
           <form
             onSubmit={handleSearch}
-            className="hidden lg:flex items-center flex-1 max-w-sm mx-6"
+            className="hidden md:flex flex-1 max-w-sm items-center rounded-xl border border-ink-300/40 bg-surface-alt px-3.5 py-2"
             role="search"
             aria-label="Search courses"
           >
-            <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
-              <Input
-                type="search"
-                placeholder="Search courses..."
-                className="pl-10 pr-4"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                aria-label="Search courses"
-                autoComplete="off"
-              />
-            </div>
+            <Search className="h-4 w-4 text-ink-400" aria-hidden="true" />
+            <input
+              type="search"
+              placeholder="Search courses..."
+              className="w-full bg-transparent px-2 text-sm outline-none placeholder:text-ink-400"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              aria-label="Search courses"
+              autoComplete="off"
+            />
           </form>
 
           {/* Auth Buttons / User Menu */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center gap-2 shrink-0">
             {isAuthenticated && user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -183,96 +183,92 @@ export function Header() {
               </DropdownMenu>
             ) : (
               <>
-                <Button asChild variant="ghost" className="hidden md:inline-flex">
-                  <Link href="/login">Login</Link>
+                <Button asChild variant="ghost" size="sm" className="hidden md:inline-flex">
+                  <Link href="/login">Log In</Link>
                 </Button>
-                <Button asChild className="hidden md:inline-flex">
+                <Button asChild size="sm" className="hidden md:inline-flex">
                   <Link href="/signup">Sign Up</Link>
                 </Button>
               </>
             )}
 
             {/* Mobile Menu Button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="md:hidden"
+            <button
+              className="lg:hidden p-2 text-ink-700"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle menu"
               aria-expanded={isMobileMenuOpen}
               aria-controls="mobile-menu"
+              type="button"
             >
               {isMobileMenuOpen ? (
-                <X className="h-6 w-6" aria-hidden="true" />
+                <X className="h-[22px] w-[22px]" aria-hidden="true" />
               ) : (
-                <Menu className="h-6 w-6" aria-hidden="true" />
+                <Menu className="h-[22px] w-[22px]" aria-hidden="true" />
               )}
-            </Button>
+            </button>
           </div>
-        </div>
-
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div
-            id="mobile-menu"
-            className="md:hidden border-t py-4 animate-fade-in"
-            role="navigation"
-            aria-label="Mobile navigation"
-          >
-            {/* Mobile Search */}
-            <form
-              onSubmit={handleSearch}
-              className="mb-4"
-              role="search"
-              aria-label="Search courses"
-            >
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
-                <Input
-                  type="search"
-                  placeholder="Search courses..."
-                  className="pl-10 pr-4"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  aria-label="Search courses"
-                  autoComplete="off"
-                />
-              </div>
-            </form>
-
-            {/* Mobile Navigation Links */}
-            <nav className="flex flex-col space-y-3" aria-label="Mobile navigation menu">
-              {PUBLIC_NAV_ITEMS.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  aria-current={pathname === item.href ? "page" : undefined}
-                  className={cn(
-                    "text-sm font-medium transition-colors hover:text-primary px-2 py-1.5 rounded-md",
-                    pathname === item.href
-                      ? "text-primary bg-primary/10"
-                      : "text-muted-foreground"
-                  )}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
-
-            {/* Mobile Auth Buttons */}
-            {!isAuthenticated && (
-              <div className="flex flex-col space-y-2 mt-4 pt-4 border-t">
-                <Button asChild variant="outline" className="w-full">
-                  <Link href="/login">Login</Link>
-                </Button>
-                <Button asChild className="w-full">
-                  <Link href="/signup">Sign Up</Link>
-                </Button>
-              </div>
-            )}
-          </div>
-        )}
       </div>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div
+          id="mobile-menu"
+          className="lg:hidden border-t border-ink-300/20 bg-white px-5 py-4"
+          role="navigation"
+          aria-label="Mobile navigation"
+        >
+          {/* Mobile Search */}
+          <form
+            onSubmit={handleSearch}
+            className="mb-4 flex items-center rounded-xl border border-ink-300/40 bg-surface-alt px-3.5 py-2.5"
+            role="search"
+            aria-label="Search courses"
+          >
+            <Search className="h-4 w-4 text-ink-400" aria-hidden="true" />
+            <input
+              type="search"
+              placeholder="Search courses..."
+              className="w-full bg-transparent px-2 text-sm outline-none placeholder:text-ink-400"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              aria-label="Search courses"
+              autoComplete="off"
+            />
+          </form>
+
+          {/* Mobile Navigation Links */}
+          <nav className="flex flex-col gap-1" aria-label="Mobile navigation menu">
+            {PUBLIC_NAV_ITEMS.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={pathname === item.href ? "page" : undefined}
+                className={cn(
+                  "rounded-lg px-3.5 py-2.5 text-sm font-semibold",
+                  pathname === item.href
+                    ? "text-brand-600 bg-brand-50"
+                    : "text-ink-700"
+                )}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Mobile Auth Buttons */}
+          {!isAuthenticated && (
+            <div className="mt-4 flex flex-col gap-2">
+              <Button asChild variant="secondary" className="w-full">
+                <Link href="/login">Log In</Link>
+              </Button>
+              <Button asChild className="w-full">
+                <Link href="/signup">Sign Up</Link>
+              </Button>
+            </div>
+          )}
+        </div>
+      )}
     </header>
   );
 }
