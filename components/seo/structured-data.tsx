@@ -7,20 +7,20 @@ export function OrganizationSchema() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "EducationalOrganization",
-    "name": "LearnHub",
+    "name": "Skillbridge",
     "description": "Online learning platform offering professional courses in web development, data science, design, and more.",
     "url": APP_URL,
     "logo": `${APP_URL}/logo.png`,
     "sameAs": [
-      "https://twitter.com/learnhub",
-      "https://facebook.com/learnhub",
-      "https://linkedin.com/company/learnhub"
+      "https://twitter.com/skillbridge",
+      "https://facebook.com/skillbridge",
+      "https://linkedin.com/company/skillbridge"
     ],
     "contactPoint": {
       "@type": "ContactPoint",
       "telephone": "+1-555-123-4567",
       "contactType": "Customer Service",
-      "email": "support@learnhub.com"
+      "email": "support@skillbridge.com"
     }
   };
 
@@ -46,7 +46,7 @@ export function CourseSchema({ course }: CourseSchemaProps) {
     "description": course.description,
     "provider": {
       "@type": "Organization",
-      "name": "LearnHub",
+      "name": "Skillbridge",
       "sameAs": APP_URL
     },
     "instructor": {

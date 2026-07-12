@@ -59,10 +59,10 @@ export function CourseFilters({
     selectedPriceRange !== null;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 rounded-2xl border border-ink-300/20 bg-white p-5">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-lg">Filters</h3>
+        <h3 className="font-bold text-ink-900">Filters</h3>
         {hasActiveFilters && (
           <Button
             variant="ghost"

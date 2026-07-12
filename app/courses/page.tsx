@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { EmptyState } from "@/components/common/empty-state";
 
 import { courses } from "@/mock/courses";
 import { categories } from "@/mock/categories";
@@ -191,19 +192,17 @@ export default function CoursesPage() {
     <div className="min-h-screen flex flex-col">
       <Header />
 
-      <main id="main-content" className="flex-1">
-        {/* Page Header */}
-        <div className="border-b bg-muted/30">
-          <div className="container mx-auto px-4 py-8">
-            <h1 className="text-3xl md:text-4xl font-bold mb-4">Explore Courses</h1>
-            <p className="text-muted-foreground">
-              {filteredAndSortedCourses.length} courses available
+      <main id="main-content" className="flex-1 bg-surface py-10">
+        <div className="container-page">
+          {/* Page Header */}
+          <div className="mb-8">
+            <h1 className="text-2xl font-extrabold text-ink-900 sm:text-3xl">Explore Courses</h1>
+            <p className="mt-1.5 text-sm text-ink-500">
+              {filteredAndSortedCourses.length} courses found
             </p>
           </div>
-        </div>
 
-        <div className="container mx-auto px-4 py-8">
-          <div className="grid lg:grid-cols-[280px_1fr] gap-8">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-[260px_1fr]">
             {/* Sidebar Filters (Desktop) */}
             <aside className="hidden lg:block">
               <div className="sticky top-20">
@@ -341,14 +340,18 @@ export default function CoursesPage() {
                       </Button>
                       <div className="flex items-center gap-1">
                         {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                          <Button
+                          <button
                             key={page}
-                            variant={currentPage === page ? "default" : "outline"}
-                            size="icon"
+                            type="button"
                             onClick={() => setCurrentPage(page)}
+                            className={`flex h-9 w-9 items-center justify-center rounded-lg text-sm font-semibold transition-colors ${
+                              currentPage === page
+                                ? "bg-brand-600 text-white"
+                                : "text-ink-500 hover:bg-surface-alt"
+                            }`}
                           >
                             {page}
-                          </Button>
+                          </button>
                         ))}
                       </div>
                       <Button
@@ -362,12 +365,16 @@ export default function CoursesPage() {
                   )}
                 </>
               ) : (
-                <div className="text-center py-16">
-                  <p className="text-muted-foreground text-lg">No courses found</p>
-                  <Button onClick={handleClearFilters} className="mt-4">
-                    Clear filters
-                  </Button>
-                </div>
+                <EmptyState
+                  icon={Search}
+                  title="No courses found"
+                  description="Try adjusting your search or filters"
+                  action={
+                    <Button onClick={handleClearFilters} className="mt-2">
+                      Clear filters
+                    </Button>
+                  }
+                />
               )}
             </div>
           </div>

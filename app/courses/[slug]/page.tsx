@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { Clock, Users, Star, Globe, Award, PlayCircle, FileText, Infinity, ChevronRight, Share2, Heart } from "lucide-react";
+import { Clock, Users, Globe, Award, PlayCircle, FileText, Infinity, ChevronRight, Share2, Heart, BadgeCheck, Signal } from "lucide-react";
 
 import { Header } from "@/components/common/header";
 import { Footer } from "@/components/common/footer";
@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
+import { Rating } from "@/components/ui/rating";
 import {
   Accordion,
   AccordionContent,
@@ -19,10 +19,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { CourseSchema, BreadcrumbSchema, ReviewSchema } from "@/components/seo/structured-data";
+import { CourseReviewsSkeleton } from "@/components/loading/course-reviews-skeleton";
 
 import { courses } from "@/mock/courses";
 import { reviews } from "@/mock/reviews";
-import { formatPrice, formatDuration, getInitials, getLevelColor } from "@/lib/utils";
+import { formatPrice, getInitials } from "@/lib/utils";
 import { APP_URL } from "@/constants";
 import type { CourseCard as CourseCardType } from "@/types";
 
@@ -30,7 +31,7 @@ import type { CourseCard as CourseCardType } from "@/types";
 const CourseReviews = dynamic(
   () => import("@/components/course/course-reviews").then((mod) => ({ default: mod.CourseReviews })),
   {
-    loading: () => import("@/components/loading/course-reviews-skeleton").then((mod) => <mod.CourseReviewsSkeleton />),
+    loading: () => <CourseReviewsSkeleton />,
     ssr: true,
   }
 );
@@ -149,13 +150,13 @@ export default async function CoursePage({ params }: CoursePageProps) {
 
       <Header />
 
-      <main className="flex-1">
+      <main className="flex-1 bg-surface pb-20">
         {/* Hero/Banner Section */}
-        <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white">
-          <div className="container mx-auto px-4 py-8 md:py-12">
-            <div className="max-w-3xl">
+        <div className="bg-ink-900">
+          <div className="container-page grid gap-8 pt-12 pb-12 lg:grid-cols-[1fr_360px] lg:pb-44">
+            <div className="text-white">
               {/* Breadcrumb */}
-              <div className="flex items-center gap-2 text-sm mb-4 text-gray-300">
+              <div className="mb-4 flex items-center gap-2 text-sm text-ink-300">
                 <Link href="/" className="hover:text-white">Home</Link>
                 <ChevronRight className="h-4 w-4" />
                 <Link href="/courses" className="hover:text-white">Courses</Link>
@@ -165,72 +166,78 @@ export default async function CoursePage({ params }: CoursePageProps) {
                 </Link>
               </div>
 
+              <div className="mb-3 flex items-center gap-2">
+                <Badge variant="default">{course.category}</Badge>
+              </div>
+
               {/* Course Title */}
-              <h1 className="text-3xl md:text-4xl font-bold mb-4">{course.title}</h1>
+              <h1 className="text-2xl font-extrabold leading-snug sm:text-3xl">{course.title}</h1>
 
               {/* Short Description */}
-              <p className="text-lg text-gray-300 mb-6">{course.shortDescription}</p>
+              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-300">{course.shortDescription}</p>
 
               {/* Meta Info */}
-              <div className="flex flex-wrap items-center gap-4 mb-6">
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center">
-                    <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                    <span className="ml-1 font-semibold">{course.rating}</span>
-                  </div>
-                  <span className="text-gray-300">
-                    ({course.reviewCount.toLocaleString()} reviews)
-                  </span>
-                </div>
-                <div className="flex items-center gap-1 text-gray-300">
-                  <Users className="h-5 w-5" />
-                  <span>{course.studentCount.toLocaleString()} students</span>
-                </div>
+              <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-ink-300">
+                <Rating value={course.rating} size={14} />
+                <span>({course.reviewCount.toLocaleString()} ratings)</span>
+                <span className="flex items-center gap-1.5">
+                  <Users size={14} /> {course.studentCount.toLocaleString()} students
+                </span>
+                <span className="flex items-center gap-1.5 capitalize">
+                  <Signal size={14} /> {course.level}
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Globe size={14} /> {course.language === "en" ? "English" : course.language}
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Clock size={14} /> {course.duration} hours total
+                </span>
               </div>
 
               {/* Instructor */}
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-gray-300">Created by</span>
-                <Link href={`/instructors/${course.instructorId}`} className="flex items-center gap-2 hover:text-primary">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src={course.instructorAvatar} alt={course.instructor} />
-                    <AvatarFallback>{getInitials(course.instructor)}</AvatarFallback>
-                  </Avatar>
-                  <span className="font-medium">{course.instructor}</span>
-                </Link>
-              </div>
-
-              {/* Additional Meta */}
-              <div className="flex flex-wrap items-center gap-4 text-sm text-gray-300">
-                <div className="flex items-center gap-1">
-                  <Globe className="h-4 w-4" />
-                  <span>{course.language === "en" ? "English" : course.language}</span>
+              <Link
+                href={`/instructors/${course.instructorId}`}
+                className="mt-5 flex w-fit items-center gap-3"
+              >
+                <Avatar className="h-10 w-10">
+                  <AvatarImage src={course.instructorAvatar} alt={course.instructor} />
+                  <AvatarFallback>{getInitials(course.instructor)}</AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="text-sm text-ink-300">Created by</p>
+                  <p className="text-sm font-semibold text-white">{course.instructor}</p>
                 </div>
-                <div className="flex items-center gap-1">
-                  <Clock className="h-4 w-4" />
-                  <span>{course.duration} hours total</span>
-                </div>
-              </div>
+              </Link>
             </div>
+            <div className="hidden lg:block" />
           </div>
         </div>
 
         {/* Main Content */}
-        <div className="container mx-auto px-4 py-8">
-          <div className="grid lg:grid-cols-[1fr_400px] gap-8">
+        <div className="container-page grid gap-8 pt-8 lg:-mt-32 lg:pt-0 lg:grid-cols-[1fr_360px]">
             {/* Left Column - Content */}
-            <div className="space-y-8">
+            <div className="space-y-10">
+              {/* Mobile banner */}
+              <Card className="overflow-hidden p-0 lg:hidden">
+                <div className="relative h-56 w-full">
+                  <Image
+                    src={course.banner || course.thumbnail}
+                    alt={course.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </Card>
+
               {/* What You'll Learn */}
               <Card>
                 <CardContent className="p-6">
-                  <h2 className="text-2xl font-bold mb-4">What you'll learn</h2>
-                  <div className="grid md:grid-cols-2 gap-3">
+                  <h2 className="mb-4 text-lg font-bold text-ink-900">What You&apos;ll Learn</h2>
+                  <div className="grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
                     {course.whatYouWillLearn.map((item, index) => (
-                      <div key={index} className="flex items-start gap-2">
-                        <svg className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span className="text-sm">{item}</span>
+                      <div key={index} className="flex items-start gap-2.5 text-sm text-ink-700">
+                        <BadgeCheck size={17} className="mt-0.5 shrink-0 text-brand-600" />
+                        {item}
                       </div>
                     ))}
                   </div>
@@ -239,44 +246,49 @@ export default async function CoursePage({ params }: CoursePageProps) {
 
               {/* Course Content/Curriculum */}
               <div>
-                <h2 className="text-2xl font-bold mb-4">Course content</h2>
-                <div className="mb-4 text-sm text-muted-foreground">
+                <h2 className="mb-4 text-lg font-bold text-ink-900">Course Curriculum</h2>
+                <div className="mb-4 text-sm text-ink-500">
                   {course.curriculum.length} sections • {course.totalLectures} lectures •{" "}
                   {course.duration}h total length
                 </div>
-                <Accordion type="single" collapsible className="space-y-2">
+                <Accordion
+                  type="single"
+                  collapsible
+                  defaultValue={course.curriculum[0]?.id}
+                  className="divide-y divide-ink-300/20 rounded-2xl border border-ink-300/20 bg-white"
+                >
                   {course.curriculum.map((section, index) => (
-                    <AccordionItem key={section.id} value={section.id} className="border rounded-lg px-4">
-                      <AccordionTrigger className="hover:no-underline">
+                    <AccordionItem key={section.id} value={section.id} className="border-b-0">
+                      <AccordionTrigger className="px-5 hover:no-underline">
                         <div className="flex items-center justify-between w-full pr-4">
-                          <span className="font-semibold">
+                          <span className="font-semibold text-ink-800">
                             Section {index + 1}: {section.title}
                           </span>
-                          <span className="text-sm text-muted-foreground">
+                          <span className="text-xs font-normal text-ink-400">
                             {section.lessons.length} lectures
                           </span>
                         </div>
                       </AccordionTrigger>
-                      <AccordionContent>
-                        <div className="space-y-2 pt-2">
+                      <AccordionContent className="px-5">
+                        <ul className="space-y-2.5">
                           {section.lessons.map((lesson) => (
-                            <div
+                            <li
                               key={lesson.id}
-                              className="flex items-center justify-between py-2 px-3 hover:bg-muted/50 rounded"
+                              className="flex items-center justify-between gap-4 text-sm text-ink-700"
                             >
-                              <div className="flex items-center gap-3">
-                                <PlayCircle className="h-4 w-4 text-muted-foreground" />
-                                <span className="text-sm">{lesson.title}</span>
+                              <span className="flex items-center gap-2.5">
+                                <PlayCircle size={15} className="shrink-0 text-ink-400" />
+                                {lesson.title}
                                 {lesson.isPreview && (
-                                  <Badge variant="secondary" className="text-xs">Preview</Badge>
+                                  <Badge variant="success" className="ml-1">Preview</Badge>
                                 )}
-                              </div>
-                              <span className="text-sm text-muted-foreground">
+                              </span>
+                              <span className="shrink-0 text-xs text-ink-400">
                                 {lesson.duration}min
                               </span>
-                            </div>
+                            </li>
                           ))}
-                        </div>
+                        </ul>
                       </AccordionContent>
                     </AccordionItem>
                   ))}
@@ -285,11 +297,11 @@ export default async function CoursePage({ params }: CoursePageProps) {
 
               {/* Requirements */}
               <div>
-                <h2 className="text-2xl font-bold mb-4">Requirements</h2>
-                <ul className="space-y-2">
+                <h2 className="mb-4 text-lg font-bold text-ink-900">Requirements</h2>
+                <ul className="space-y-2 text-sm text-ink-700">
                   {course.requirements.map((req, index) => (
                     <li key={index} className="flex items-start gap-2">
-                      <span className="text-muted-foreground">•</span>
+                      <span className="text-ink-400">•</span>
                       <span>{req}</span>
                     </li>
                   ))}
@@ -298,17 +310,17 @@ export default async function CoursePage({ params }: CoursePageProps) {
 
               {/* Description */}
               <div>
-                <h2 className="text-2xl font-bold mb-4">Description</h2>
-                <p className="text-muted-foreground whitespace-pre-line">{course.description}</p>
+                <h2 className="mb-4 text-lg font-bold text-ink-900">Description</h2>
+                <p className="whitespace-pre-line text-sm leading-relaxed text-ink-500">{course.description}</p>
               </div>
 
               {/* Target Audience */}
               <div>
-                <h2 className="text-2xl font-bold mb-4">Who this course is for</h2>
-                <ul className="space-y-2">
+                <h2 className="mb-4 text-lg font-bold text-ink-900">Who this course is for</h2>
+                <ul className="space-y-2 text-sm text-ink-700">
                   {course.targetAudience.map((audience, index) => (
                     <li key={index} className="flex items-start gap-2">
-                      <span className="text-muted-foreground">•</span>
+                      <span className="text-ink-400">•</span>
                       <span>{audience}</span>
                     </li>
                   ))}
@@ -316,35 +328,28 @@ export default async function CoursePage({ params }: CoursePageProps) {
               </div>
 
               {/* Instructor */}
-              <div>
-                <h2 className="text-2xl font-bold mb-4">Instructor</h2>
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex gap-4">
-                      <Avatar className="h-20 w-20">
-                        <AvatarImage src={course.instructorAvatar} alt={course.instructor} />
-                        <AvatarFallback>{getInitials(course.instructor)}</AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1">
-                        <Link href={`/instructors/${course.instructorId}`} className="text-xl font-semibold hover:text-primary">
-                          {course.instructor}
-                        </Link>
-                        <p className="text-muted-foreground text-sm mb-3">Senior Web Developer</p>
-                        <div className="flex flex-wrap gap-4 text-sm">
-                          <div className="flex items-center gap-1">
-                            <Star className="h-4 w-4" />
-                            <span>{course.rating} rating</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Users className="h-4 w-4" />
-                            <span>{course.studentCount.toLocaleString()} students</span>
-                          </div>
-                        </div>
-                      </div>
+              <Card className="p-6">
+                <div className="flex flex-col gap-5 sm:flex-row">
+                  <Avatar className="h-20 w-20 shrink-0">
+                    <AvatarImage src={course.instructorAvatar} alt={course.instructor} />
+                    <AvatarFallback>{getInitials(course.instructor)}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-wide text-brand-600">Instructor</p>
+                    <Link
+                      href={`/instructors/${course.instructorId}`}
+                      className="mt-1 block text-lg font-bold text-ink-900 hover:text-brand-600"
+                    >
+                      {course.instructor}
+                    </Link>
+                    <p className="text-sm text-ink-500">Senior Web Developer</p>
+                    <div className="mt-3 flex flex-wrap items-center gap-4 text-xs text-ink-500">
+                      <Rating value={course.rating} size={13} />
+                      <span>{course.studentCount.toLocaleString()} students</span>
                     </div>
-                  </CardContent>
-                </Card>
-              </div>
+                  </div>
+                </div>
+              </Card>
 
               {/* Student Reviews - Dynamically Loaded */}
               <CourseReviews
@@ -358,93 +363,90 @@ export default async function CoursePage({ params }: CoursePageProps) {
             </div>
 
             {/* Right Column - Sticky Purchase Card */}
-            <div>
-              <div className="sticky top-20">
-                <Card>
-                  <div className="relative aspect-video">
-                    <Image
-                      src={course.banner || course.thumbnail}
-                      alt={course.title}
-                      fill
-                      className="object-cover rounded-t-lg"
-                    />
+            <div className="lg:sticky lg:top-24 lg:self-start">
+              <Card className="overflow-hidden">
+                <div className="relative hidden h-44 w-full lg:block">
+                  <Image
+                    src={course.banner || course.thumbnail}
+                    alt={course.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-6">
+                  {/* Price */}
+                  <div className="flex items-baseline gap-2">
+                    {course.discountPrice ? (
+                      <>
+                        <span className="text-2xl font-extrabold text-ink-900">
+                          {formatPrice(course.discountPrice)}
+                        </span>
+                        <span className="text-sm text-ink-400 line-through">
+                          {formatPrice(course.price)}
+                        </span>
+                        <Badge variant="warning">{discountPercentage}% OFF</Badge>
+                      </>
+                    ) : (
+                      <span className="text-2xl font-extrabold text-ink-900">
+                        {formatPrice(course.price)}
+                      </span>
+                    )}
                   </div>
-                  <CardContent className="p-6 space-y-4">
-                    {/* Price */}
-                    <div className="flex items-center gap-3">
-                      {course.discountPrice ? (
-                        <>
-                          <span className="text-3xl font-bold">
-                            {formatPrice(course.discountPrice)}
-                          </span>
-                          <span className="text-lg text-muted-foreground line-through">
-                            {formatPrice(course.price)}
-                          </span>
-                          <Badge variant="destructive">{discountPercentage}% OFF</Badge>
-                        </>
-                      ) : (
-                        <span className="text-3xl font-bold">{formatPrice(course.price)}</span>
-                      )}
+
+                  {/* Actions */}
+                  <Button className="mt-5 w-full" size="lg">
+                    Enroll Now
+                  </Button>
+                  <div className="mt-3 flex gap-2">
+                    <Button variant="secondary" className="w-full">
+                      <Heart className="h-[15px] w-[15px]" />
+                      Wishlist
+                    </Button>
+                    <Button variant="secondary" className="w-full">
+                      <Share2 className="h-[15px] w-[15px]" />
+                      Share
+                    </Button>
+                  </div>
+
+                  {/* This course includes */}
+                  <div className="mt-6 space-y-3 border-t border-ink-300/15 pt-5 text-sm text-ink-700">
+                    <p className="font-semibold text-ink-900">This course includes:</p>
+                    <div className="flex items-center gap-2.5">
+                      <Clock size={14} className="shrink-0 text-ink-400" />
+                      {course.duration} hours on-demand video
                     </div>
-
-                    {/* Actions */}
-                    <div className="space-y-2">
-                      <Button className="w-full" size="lg">
-                        Enroll Now
-                      </Button>
-                      <Button variant="outline" className="w-full" size="lg">
-                        <Heart className="mr-2 h-4 w-4" />
-                        Add to Wishlist
-                      </Button>
-                      <Button variant="ghost" className="w-full" size="lg">
-                        <Share2 className="mr-2 h-4 w-4" />
-                        Share Course
-                      </Button>
+                    <div className="flex items-center gap-2.5">
+                      <FileText size={14} className="shrink-0 text-ink-400" />
+                      {course.totalLectures} lectures
                     </div>
-
-                    <Separator />
-
-                    {/* This course includes */}
-                    <div>
-                      <h3 className="font-semibold mb-3">This course includes:</h3>
-                      <div className="space-y-2 text-sm">
-                        <div className="flex items-center gap-2">
-                          <Clock className="h-4 w-4 text-muted-foreground" />
-                          <span>{course.duration} hours on-demand video</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <FileText className="h-4 w-4 text-muted-foreground" />
-                          <span>{course.totalLectures} lectures</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Infinity className="h-4 w-4 text-muted-foreground" />
-                          <span>Full lifetime access</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Badge className="h-4 w-4 text-muted-foreground" />
-                          <span>Access on mobile and desktop</span>
-                        </div>
-                        {course.hasCertificate && (
-                          <div className="flex items-center gap-2">
-                            <Award className="h-4 w-4 text-muted-foreground" />
-                            <span>Certificate of completion</span>
-                          </div>
-                        )}
+                    <div className="flex items-center gap-2.5">
+                      <Infinity size={14} className="shrink-0 text-ink-400" />
+                      Full lifetime access
+                    </div>
+                    <div className="flex items-center gap-2.5">
+                      <Globe size={14} className="shrink-0 text-ink-400" />
+                      Access on mobile and desktop
+                    </div>
+                    {course.hasCertificate && (
+                      <div className="flex items-center gap-2.5">
+                        <Award size={14} className="shrink-0 text-ink-400" />
+                        Certificate of completion
                       </div>
+                    )}
+                    <div className="flex items-center justify-between border-t border-ink-300/15 pt-3">
+                      <span className="text-ink-500">Level</span>
+                      <Badge variant="default" className="capitalize">{course.level}</Badge>
                     </div>
-
-                    <Separator />
-
-                    {/* Level & Category */}
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Level</span>
-                      <Badge className={getLevelColor(course.level)}>{course.level}</Badge>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
+                  </div>
+                </div>
+              </Card>
+              <Link
+                href="/courses"
+                className="mt-4 block text-center text-sm font-semibold text-brand-600 hover:underline"
+              >
+                ← Back to all courses
+              </Link>
             </div>
-          </div>
         </div>
       </main>
 

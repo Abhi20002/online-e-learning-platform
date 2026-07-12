@@ -99,20 +99,14 @@ export default function AdminUsersPage() {
   };
 
   const getRoleBadge = (role: UserRole) => {
-    const variants = {
-      student: "default",
-      instructor: "secondary",
-      admin: "destructive",
-    } as const;
-
     const colors = {
-      student: "bg-blue-600",
-      instructor: "bg-green-600",
-      admin: "bg-purple-600",
+      student: "bg-sky-100 text-sky-700 hover:bg-sky-100/80",
+      instructor: "bg-emerald-100 text-emerald-700 hover:bg-emerald-100/80",
+      admin: "bg-violet-100 text-violet-700 hover:bg-violet-100/80",
     };
 
     return (
-      <Badge variant={variants[role]} className={`capitalize ${colors[role]}`}>
+      <Badge variant="outline" className={`capitalize border-transparent ${colors[role]}`}>
         {role}
       </Badge>
     );
@@ -135,10 +129,10 @@ export default function AdminUsersPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-bold mb-2">User Management</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-xl font-extrabold text-ink-900">User Management</h1>
+          <p className="mt-1 text-sm text-ink-500">
             Manage users, roles, and permissions
           </p>
         </div>
@@ -186,32 +180,32 @@ export default function AdminUsersPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-4 border rounded-lg">
-          <p className="text-sm text-muted-foreground">Total Users</p>
-          <p className="text-2xl font-bold">{adminUsers.length}</p>
+        <div className="rounded-2xl border border-ink-300/20 bg-white p-4 shadow-soft">
+          <p className="text-sm text-ink-500">Total Users</p>
+          <p className="text-2xl font-extrabold">{adminUsers.length}</p>
         </div>
-        <div className="p-4 border rounded-lg">
-          <p className="text-sm text-muted-foreground">Students</p>
-          <p className="text-2xl font-bold text-blue-600">
+        <div className="rounded-2xl border border-ink-300/20 bg-white p-4 shadow-soft">
+          <p className="text-sm text-ink-500">Students</p>
+          <p className="text-2xl font-extrabold text-sky-600">
             {adminUsers.filter((u) => u.role === "student").length}
           </p>
         </div>
-        <div className="p-4 border rounded-lg">
-          <p className="text-sm text-muted-foreground">Instructors</p>
-          <p className="text-2xl font-bold text-green-600">
+        <div className="rounded-2xl border border-ink-300/20 bg-white p-4 shadow-soft">
+          <p className="text-sm text-ink-500">Instructors</p>
+          <p className="text-2xl font-extrabold text-emerald-600">
             {adminUsers.filter((u) => u.role === "instructor").length}
           </p>
         </div>
-        <div className="p-4 border rounded-lg">
-          <p className="text-sm text-muted-foreground">Active Users</p>
-          <p className="text-2xl font-bold text-green-600">
+        <div className="rounded-2xl border border-ink-300/20 bg-white p-4 shadow-soft">
+          <p className="text-sm text-ink-500">Active Users</p>
+          <p className="text-2xl font-extrabold text-emerald-600">
             {adminUsers.filter((u) => u.status === "active").length}
           </p>
         </div>
       </div>
 
       {/* Users Table */}
-      <div className="border rounded-lg">
+      <div className="overflow-x-auto rounded-2xl border border-ink-300/20 bg-white">
         <Table>
           <TableHeader>
             <TableRow>
@@ -334,7 +328,7 @@ export default function AdminUsersPage() {
       {/* Pagination */}
       {filteredUsers.length > 10 && (
         <div className="flex items-center justify-between">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-ink-500">
             Showing {filteredUsers.length} of {adminUsers.length} users
           </p>
           <div className="flex gap-2">

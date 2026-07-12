@@ -13,9 +13,9 @@ import { APP_URL } from "@/constants";
 
 export default function AdminSettingsPage() {
   const [settings, setSettings] = useState({
-    siteName: "LearnHub",
+    siteName: "Skillbridge",
     siteUrl: APP_URL,
-    supportEmail: "support@learnhub.com",
+    supportEmail: "support@skillbridge.com",
     allowRegistration: true,
     requireEmailVerification: true,
     maintenanceMode: false,

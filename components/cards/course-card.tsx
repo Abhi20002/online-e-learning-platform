@@ -3,16 +3,13 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Clock, Users, Star, Heart } from "lucide-react";
+import { Clock, Heart, Users } from "lucide-react";
 import { toast } from "sonner";
 
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Rating } from "@/components/ui/rating";
 import type { CourseCard as CourseCardType } from "@/types";
-import { formatPrice, formatDuration, getInitials, getLevelColor } from "@/lib/utils";
-import { cn } from "@/lib/utils";
+import { formatPrice, formatDuration } from "@/lib/utils";
 
 interface CourseCardProps {
   course: CourseCardType;
@@ -42,124 +39,93 @@ export function CourseCard({ course, showWishlist = true }: CourseCardProps) {
     : 0;
 
   return (
-    <Link href={`/courses/${course.slug}`} aria-label={`View course: ${course.title}`}>
-      <Card className="group h-full overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1">
-        {/* Course Thumbnail */}
-        <div className="relative aspect-video overflow-hidden bg-muted">
-          <Image
-            src={course.thumbnail}
-            alt={course.title}
-            fill
-            className="object-cover transition-transform group-hover:scale-105"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
-
-          {/* Wishlist Button */}
-          {showWishlist && (
-            <button
-              onClick={handleWishlistToggle}
-              className="absolute top-3 right-3 p-2 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background transition-colors"
-              aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
-              type="button"
-            >
-              <Heart
-                className={cn(
-                  "h-4 w-4 transition-colors",
-                  isInWishlist
-                    ? "fill-red-500 text-red-500"
-                    : "text-muted-foreground hover:text-red-500"
-                )}
-                aria-hidden="true"
-              />
-            </button>
-          )}
-
-          {/* Category Badge */}
-          <div className="absolute top-3 left-3">
-            <Badge className="bg-background/80 backdrop-blur-sm text-foreground hover:bg-background/90">
-              {course.category}
-            </Badge>
-          </div>
-
-          {/* Discount Badge */}
+    <div className="group flex flex-col overflow-hidden rounded-2xl border border-ink-300/20 bg-white shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-lifted">
+      <Link
+        href={`/courses/${course.slug}`}
+        className="relative block h-44 overflow-hidden"
+        aria-label={`View course: ${course.title}`}
+      >
+        <Image
+          src={course.thumbnail}
+          alt={course.title}
+          fill
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
+        <div className="absolute left-3 top-3 flex gap-2">
+          <Badge variant="default">{course.category}</Badge>
           {discountPercentage > 0 && (
-            <div className="absolute bottom-3 left-3">
-              <Badge variant="destructive" className="font-bold">
-                {discountPercentage}% OFF
-              </Badge>
-            </div>
+            <Badge variant="warning">{discountPercentage}% OFF</Badge>
           )}
         </div>
+        {showWishlist && (
+          <button
+            onClick={handleWishlistToggle}
+            className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-ink-500 shadow-soft hover:text-coral-accent"
+            aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
+            type="button"
+          >
+            <Heart
+              size={15}
+              className={isInWishlist ? "fill-coral-accent text-coral-accent" : ""}
+              aria-hidden="true"
+            />
+          </button>
+        )}
+      </Link>
 
-        <CardContent className="p-4 space-y-3">
-          {/* Course Title */}
-          <h3 className="font-semibold text-lg line-clamp-2 group-hover:text-primary transition-colors">
+      <div className="flex flex-1 flex-col p-4">
+        <Link href={`/courses/${course.slug}`}>
+          <h3 className="mb-2 line-clamp-2 text-[15px] font-bold leading-snug text-ink-900 hover:text-brand-600">
             {course.title}
           </h3>
+        </Link>
 
-          {/* Instructor */}
-          <div className="flex items-center space-x-2">
-            <Avatar className="h-6 w-6">
-              <AvatarImage src={course.instructorAvatar} alt={course.instructor} />
-              <AvatarFallback className="text-xs">
-                {getInitials(course.instructor)}
-              </AvatarFallback>
-            </Avatar>
-            <span className="text-sm text-muted-foreground">{course.instructor}</span>
-          </div>
+        <div className="mb-3 flex items-center gap-2">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={course.instructorAvatar}
+            alt={course.instructor}
+            className="h-5 w-5 rounded-full object-cover"
+          />
+          <span className="text-xs font-medium text-ink-500">{course.instructor}</span>
+        </div>
 
-          {/* Rating & Students */}
-          <div className="flex items-center justify-between text-sm">
-            <div className="flex items-center space-x-1">
-              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" aria-hidden="true" />
-              <span className="font-medium">{course.rating.toFixed(1)}</span>
-              <span className="text-muted-foreground">
-                ({course.reviewCount.toLocaleString()})
-              </span>
-            </div>
-            <div className="flex items-center space-x-1 text-muted-foreground">
-              <Users className="h-4 w-4" aria-hidden="true" />
-              <span>{course.studentCount.toLocaleString()} students</span>
-            </div>
-          </div>
+        <div className="mb-3 flex items-center gap-3 text-xs text-ink-500">
+          <Rating value={course.rating} size={12} />
+          <span className="flex items-center gap-1">
+            <Users size={12} /> {course.studentCount.toLocaleString()}
+          </span>
+          <span className="flex items-center gap-1">
+            <Clock size={12} /> {formatDuration(course.duration * 60)}
+          </span>
+        </div>
 
-          {/* Course Meta */}
-          <div className="flex items-center justify-between text-sm text-muted-foreground">
-            <div className="flex items-center space-x-1">
-              <Clock className="h-4 w-4" aria-hidden="true" />
-              <span>{formatDuration(course.duration * 60)}</span>
-            </div>
-            <Badge variant="secondary" className={getLevelColor(course.level)}>
-              {course.level}
-            </Badge>
-          </div>
-        </CardContent>
-
-        <CardFooter className="p-4 pt-0 flex items-center justify-between">
-          {/* Price */}
-          <div className="flex items-center space-x-2">
+        <div className="mt-auto flex items-center justify-between border-t border-ink-300/15 pt-3">
+          <div className="flex items-baseline gap-2">
             {course.discountPrice ? (
               <>
-                <span className="text-2xl font-bold text-primary">
+                <span className="text-base font-extrabold text-ink-900">
                   {formatPrice(course.discountPrice)}
                 </span>
-                <span className="text-sm text-muted-foreground line-through">
+                <span className="text-xs text-ink-400 line-through">
                   {formatPrice(course.price)}
                 </span>
               </>
             ) : (
-              <span className="text-2xl font-bold text-primary">
+              <span className="text-base font-extrabold text-ink-900">
                 {formatPrice(course.price)}
               </span>
             )}
           </div>
-
-          {/* Enroll Button */}
-          <Button size="sm" className="ml-auto">
-            Enroll Now
-          </Button>
-        </CardFooter>
-      </Card>
-    </Link>
+          <Link
+            href={`/courses/${course.slug}`}
+            className="rounded-lg bg-brand-50 px-3 py-1.5 text-xs font-bold text-brand-700 hover:bg-brand-100"
+          >
+            Enroll
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 }

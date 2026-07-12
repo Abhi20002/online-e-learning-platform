@@ -11,15 +11,15 @@ import {
   LogOut,
   Menu,
   X,
-  GraduationCap,
   BarChart3,
+  Bell,
 } from "lucide-react";
 import { useAuth } from "@/context/auth.context";
-import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/common/logo";
+// import { ThemeToggle } from "@/components/common/theme-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { getInitials } from "@/lib/utils";
+import { getInitials, cn } from "@/lib/utils";
 import { toast } from "sonner";
 
 const navigationItems = [
@@ -85,8 +85,8 @@ export default function AdminLayout({
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="flex flex-col items-center gap-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-          <p className="text-muted-foreground">Loading...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-600"></div>
+          <p className="text-ink-500">Loading...</p>
         </div>
       </div>
     );
@@ -97,149 +97,118 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Top Header */}
-      <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/admin" className="flex items-center space-x-2">
-            <GraduationCap className="h-6 w-6 text-primary" />
-            <span className="font-bold text-lg">LearnHub Admin</span>
+    <div className="flex min-h-screen bg-surface">
+      {/* Mobile scrim */}
+      {isMobileMenuOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-ink-900/40 lg:hidden"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside
+        id="mobile-sidebar"
+        className={cn(
+          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-ink-300/20 bg-white transition-transform duration-300 lg:sticky lg:top-0 lg:h-screen lg:translate-x-0",
+          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+        )}
+        aria-label="Admin navigation"
+      >
+        <div className="flex h-18 items-center justify-between px-5 py-4">
+          <Link href="/admin" className="flex flex-col items-start gap-0.5 pl-2" aria-label="Skillbridge Admin">
+            <Logo />
+            <span className="pl-3 text-xs text-ink-400">Admin Panel</span>
           </Link>
-
-          {/* Mobile Menu Toggle */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="lg:hidden"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          <button
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="p-1 text-ink-500 lg:hidden"
+            aria-label="Close menu"
+            type="button"
           >
-            {isMobileMenuOpen ? (
-              <X className="h-5 w-5" />
-            ) : (
-              <Menu className="h-5 w-5" />
-            )}
-          </Button>
-
-          {/* Desktop User Info */}
-          <div className="hidden lg:flex items-center gap-3">
-            <Badge variant="default" className="bg-purple-600">
-              Admin
-            </Badge>
-            <Avatar className="h-9 w-9">
-              <AvatarImage src={user.avatar} alt={user.name} />
-              <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
-            </Avatar>
-            <div className="flex flex-col">
-              <span className="text-sm font-medium">{user.name}</span>
-              <span className="text-xs text-muted-foreground">{user.email}</span>
-            </div>
-          </div>
+            <X size={20} />
+          </button>
         </div>
-      </header>
 
-      <div className="container mx-auto px-4 py-6">
-        <div className="flex flex-col lg:flex-row gap-6">
-          {/* Sidebar Navigation - Desktop */}
-          <aside className="hidden lg:block w-64 flex-shrink-0">
-            <div className="sticky top-24 space-y-1">
-              <nav className="space-y-1">
-                {navigationItems.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = pathname === item.href;
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                        isActive
-                          ? "bg-primary text-primary-foreground"
-                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                      }`}
-                    >
-                      <Icon className="h-5 w-5" />
-                      <span className="font-medium">{item.label}</span>
-                    </Link>
-                  );
-                })}
-              </nav>
-
-              <Separator className="my-4" />
-
-              <Button
-                variant="ghost"
-                className="w-full justify-start text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-                onClick={handleLogout}
+        <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-2">
+          {navigationItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={cn(
+                  "flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-semibold transition-colors",
+                  isActive
+                    ? "bg-brand-50 text-brand-700"
+                    : "text-ink-500 hover:bg-surface-alt"
+                )}
               >
-                <LogOut className="h-5 w-5 mr-3" />
-                Logout
-              </Button>
-            </div>
-          </aside>
+                <Icon size={18} />
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
 
-          {/* Mobile Navigation Menu */}
-          {isMobileMenuOpen && (
-            <div className="lg:hidden fixed inset-0 top-16 z-50 bg-background border-t">
-              <div className="container mx-auto px-4 py-6">
-                {/* Mobile User Info */}
-                <div className="flex items-center gap-3 mb-6 p-4 bg-muted/50 rounded-lg">
-                  <Avatar className="h-12 w-12">
-                    <AvatarImage src={user.avatar} alt={user.name} />
-                    <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
-                  </Avatar>
-                  <div className="flex flex-col flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">{user.name}</span>
-                      <Badge variant="default" className="bg-purple-600 text-xs">
-                        Admin
-                      </Badge>
-                    </div>
-                    <span className="text-xs text-muted-foreground">{user.email}</span>
-                  </div>
-                </div>
+        <div className="border-t border-ink-300/20 px-3 py-3">
+          <button
+            onClick={handleLogout}
+            className="flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-ink-500 transition-colors hover:bg-red-50 hover:text-red-600"
+            type="button"
+          >
+            <LogOut size={18} />
+            Logout
+          </button>
+        </div>
+      </aside>
 
-                <nav className="space-y-1">
-                  {navigationItems.map((item) => {
-                    const Icon = item.icon;
-                    const isActive = pathname === item.href;
-                    return (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                          isActive
-                            ? "bg-primary text-primary-foreground"
-                            : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                        }`}
-                      >
-                        <Icon className="h-5 w-5" />
-                        <span className="font-medium">{item.label}</span>
-                      </Link>
-                    );
-                  })}
-                </nav>
+      {/* Main column */}
+      <div className="flex min-w-0 flex-1 flex-col">
+        {/* Topbar */}
+        <header className="sticky top-0 z-30 flex h-18 items-center justify-between gap-4 border-b border-ink-300/20 bg-white/90 px-5 py-3 backdrop-blur-md">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-1.5 text-ink-500 lg:hidden"
+              aria-label="Toggle menu"
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-sidebar"
+              type="button"
+            >
+              <Menu size={22} />
+            </button>
+            <h1 className="text-lg font-extrabold text-ink-900">Admin Panel</h1>
+          </div>
 
-                <Separator className="my-4" />
-
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-                  onClick={() => {
-                    setIsMobileMenuOpen(false);
-                    handleLogout();
-                  }}
-                >
-                  <LogOut className="h-5 w-5 mr-3" />
-                  Logout
-                </Button>
+          <div className="flex items-center gap-3">
+            <Badge variant="default">Admin</Badge>
+            {/* <ThemeToggle /> */}
+            <button
+              className="relative rounded-full p-2 text-ink-500 hover:bg-surface-alt"
+              aria-label="Notifications"
+              type="button"
+            >
+              <Bell size={19} />
+              <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-coral-accent" />
+            </button>
+            <div className="flex items-center gap-2.5">
+              <Avatar className="h-9 w-9">
+                <AvatarImage src={user.avatar} alt={user.name} />
+                <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
+              </Avatar>
+              <div className="hidden sm:block text-left leading-tight">
+                <p className="text-sm font-semibold text-ink-800">{user.name}</p>
+                <p className="text-xs text-ink-400">{user.email}</p>
               </div>
             </div>
-          )}
+          </div>
+        </header>
 
-          {/* Main Content */}
-          <main className="flex-1 min-w-0">{children}</main>
-        </div>
+        {/* Main Content */}
+        <main className="flex-1 p-5 lg:p-8">{children}</main>
       </div>
     </div>
   );

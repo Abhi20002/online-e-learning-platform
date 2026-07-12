@@ -1,8 +1,7 @@
 import Link from "next/link";
-import { GraduationCap } from "lucide-react";
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaYoutube } from "react-icons/fa";
-import { Separator } from "@/components/ui/separator";
 import { APP_NAME, FOOTER_LINKS, SOCIAL_LINKS } from "@/constants";
+import { Logo } from "@/components/common/logo";
 
 const socialIcons = {
   Facebook: FaFacebook,
@@ -14,115 +13,94 @@ const socialIcons = {
 
 export function Footer() {
   return (
-    <footer className="border-t bg-muted/30" role="contentinfo">
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-          {/* Brand */}
-          <div className="lg:col-span-2 space-y-4">
-            <Link href="/" className="flex items-center space-x-2" aria-label="LearnHub Home">
-              <GraduationCap className="h-8 w-8 text-primary" aria-hidden="true" />
-              <span className="text-xl font-bold">{APP_NAME}</span>
-            </Link>
-            <p className="text-sm text-muted-foreground max-w-md">
-              Empowering learners worldwide with high-quality, accessible online education.
-              Start your learning journey today.
-            </p>
-            {/* Social Links */}
-            <div className="flex items-center space-x-4" aria-label="Social media links">
-              {SOCIAL_LINKS.map((social) => {
-                const Icon = socialIcons[social.icon as keyof typeof socialIcons];
-                return (
-                  <Link
-                    key={social.name}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                    aria-label={social.name}
-                  >
-                    {Icon && <Icon className="h-5 w-5" aria-hidden="true" />}
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Company Links */}
-          <div>
-            <h3 className="font-semibold mb-4">Company</h3>
-            <ul className="space-y-3">
-              {FOOTER_LINKS.company.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Support Links */}
-          <div>
-            <h3 className="font-semibold mb-4">Support</h3>
-            <ul className="space-y-3">
-              {FOOTER_LINKS.support.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Resources Links */}
-          <div>
-            <h3 className="font-semibold mb-4">Resources</h3>
-            <ul className="space-y-3">
-              {FOOTER_LINKS.resources.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+    <footer className="border-t border-ink-300/20 bg-ink-900 text-ink-300" role="contentinfo">
+      <div className="container-page grid grid-cols-1 gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Brand */}
+        <div>
+          <Link href="/" className="inline-flex items-center pl-2" aria-label="Skillbridge Home">
+            <Logo dark />
+          </Link>
+          <p className="mt-4 text-sm leading-relaxed">
+            Empowering learners worldwide with high-quality, accessible online education.
+            Start your learning journey today.
+          </p>
+          {/* Social Links */}
+          <div className="mt-5 flex gap-3" aria-label="Social media links">
+            {SOCIAL_LINKS.map((social) => {
+              const Icon = socialIcons[social.icon as keyof typeof socialIcons];
+              return (
+                <Link
+                  key={social.name}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 hover:bg-brand-500 transition-colors"
+                  aria-label={social.name}
+                >
+                  {Icon && <Icon className="h-3.5 w-3.5" aria-hidden="true" />}
+                </Link>
+              );
+            })}
           </div>
         </div>
 
-        <Separator className="my-8" />
+        {/* Company Links */}
+        <div>
+          <h4 className="mb-4 text-sm font-bold uppercase tracking-wide text-white">Company</h4>
+          <ul className="space-y-2.5 text-sm">
+            {FOOTER_LINKS.company.map((link) => (
+              <li key={link.href}>
+                <Link href={link.href} className="hover:text-white transition-colors">
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-        {/* Bottom */}
-        <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-          <p className="text-sm text-muted-foreground">
+        {/* Support Links */}
+        <div>
+          <h4 className="mb-4 text-sm font-bold uppercase tracking-wide text-white">Support</h4>
+          <ul className="space-y-2.5 text-sm">
+            {FOOTER_LINKS.support.map((link) => (
+              <li key={link.href}>
+                <Link href={link.href} className="hover:text-white transition-colors">
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Resources Links */}
+        <div>
+          <h4 className="mb-4 text-sm font-bold uppercase tracking-wide text-white">Resources</h4>
+          <ul className="space-y-2.5 text-sm">
+            {FOOTER_LINKS.resources.map((link) => (
+              <li key={link.href}>
+                <Link href={link.href} className="hover:text-white transition-colors">
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      {/* Bottom */}
+      <div className="border-t border-white/10 py-5">
+        <div className="container-page flex flex-col items-center justify-between gap-3 md:flex-row">
+          <p className="text-xs text-ink-400">
             © {new Date().getFullYear()} {APP_NAME}. All rights reserved.
           </p>
-          <div className="flex items-center space-x-6">
-            <Link
-              href="/privacy"
-              className="text-sm text-muted-foreground hover:text-primary transition-colors"
-            >
+          <div className="flex items-center gap-6 text-xs text-ink-400">
+            <Link href="/privacy" className="hover:text-white transition-colors">
               Privacy Policy
             </Link>
-            <Link
-              href="/terms"
-              className="text-sm text-muted-foreground hover:text-primary transition-colors"
-            >
+            <Link href="/terms" className="hover:text-white transition-colors">
               Terms of Service
             </Link>
-            <Link
-              href="/cookies"
-              className="text-sm text-muted-foreground hover:text-primary transition-colors"
-            >
+            <Link href="/cookies" className="hover:text-white transition-colors">
               Cookies
             </Link>
           </div>

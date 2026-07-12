@@ -102,10 +102,10 @@ export default function AdminCoursesPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-bold mb-2">Course Management</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-xl font-extrabold text-ink-900">Course Management</h1>
+          <p className="mt-1 text-sm text-ink-500">
             Manage all courses, content, and instructor assignments
           </p>
         </div>
@@ -144,32 +144,32 @@ export default function AdminCoursesPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-4 border rounded-lg">
-          <p className="text-sm text-muted-foreground">Total Courses</p>
-          <p className="text-2xl font-bold">{adminCourses.length}</p>
+        <div className="rounded-2xl border border-ink-300/20 bg-white p-4 shadow-soft">
+          <p className="text-sm text-ink-500">Total Courses</p>
+          <p className="text-2xl font-extrabold">{adminCourses.length}</p>
         </div>
-        <div className="p-4 border rounded-lg">
-          <p className="text-sm text-muted-foreground">Published</p>
-          <p className="text-2xl font-bold text-green-600">
+        <div className="rounded-2xl border border-ink-300/20 bg-white p-4 shadow-soft">
+          <p className="text-sm text-ink-500">Published</p>
+          <p className="text-2xl font-extrabold text-emerald-600">
             {adminCourses.filter((c) => c.status === "published").length}
           </p>
         </div>
-        <div className="p-4 border rounded-lg">
-          <p className="text-sm text-muted-foreground">Drafts</p>
-          <p className="text-2xl font-bold text-orange-600">
+        <div className="rounded-2xl border border-ink-300/20 bg-white p-4 shadow-soft">
+          <p className="text-sm text-ink-500">Drafts</p>
+          <p className="text-2xl font-extrabold text-amber-600">
             {adminCourses.filter((c) => c.status === "draft").length}
           </p>
         </div>
-        <div className="p-4 border rounded-lg">
-          <p className="text-sm text-muted-foreground">Total Students</p>
-          <p className="text-2xl font-bold">
+        <div className="rounded-2xl border border-ink-300/20 bg-white p-4 shadow-soft">
+          <p className="text-sm text-ink-500">Total Students</p>
+          <p className="text-2xl font-extrabold">
             {adminCourses.reduce((sum, c) => sum + c.students, 0).toLocaleString()}
           </p>
         </div>
       </div>
 
       {/* Courses Table */}
-      <div className="border rounded-lg">
+      <div className="overflow-x-auto rounded-2xl border border-ink-300/20 bg-white">
         <Table>
           <TableHeader>
             <TableRow>
@@ -276,7 +276,7 @@ export default function AdminCoursesPage() {
       {/* Pagination */}
       {filteredCourses.length > 10 && (
         <div className="flex items-center justify-between">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-ink-500">
             Showing {filteredCourses.length} of {adminCourses.length} courses
           </p>
           <div className="flex gap-2">
