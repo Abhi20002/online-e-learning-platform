@@ -16,7 +16,10 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/context/auth.context";
 import { Logo } from "@/components/common/logo";
+// import { ThemeToggle } from "@/components/common/theme-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { getInitials, cn } from "@/lib/utils";
 import { toast } from "sonner";
 
@@ -182,6 +185,7 @@ export default function DashboardLayout({
           </div>
 
           <div className="flex items-center gap-3">
+            {/* <ThemeToggle /> */}
             <button
               className="relative rounded-full p-2 text-ink-500 hover:bg-surface-alt"
               aria-label="Notifications"

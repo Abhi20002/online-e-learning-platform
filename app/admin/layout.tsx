@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/context/auth.context";
 import { Logo } from "@/components/common/logo";
+// import { ThemeToggle } from "@/components/common/theme-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { getInitials, cn } from "@/lib/utils";
@@ -184,6 +185,7 @@ export default function AdminLayout({
 
           <div className="flex items-center gap-3">
             <Badge variant="default">Admin</Badge>
+            {/* <ThemeToggle /> */}
             <button
               className="relative rounded-full p-2 text-ink-500 hover:bg-surface-alt"
               aria-label="Notifications"

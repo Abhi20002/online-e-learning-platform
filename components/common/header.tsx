@@ -18,6 +18,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/context/auth.context";
 import { PUBLIC_NAV_ITEMS } from "@/constants";
 import { Logo } from "@/components/common/logo";
+// import { ThemeToggle } from "@/components/common/theme-toggle";
 import { cn, getInitials } from "@/lib/utils";
 
 export function Header() {
@@ -193,6 +194,9 @@ export function Header() {
                 </Button>
               </>
             )}
+
+            {/* Theme Toggle */}
+            {/* <ThemeToggle /> */}
 
             {/* Mobile Menu Button */}
             <button
