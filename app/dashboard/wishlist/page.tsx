@@ -92,16 +92,19 @@ export default function WishlistPage() {
 
           {/* Summary Card */}
           <div className="rounded-2xl border border-border/60 bg-background p-6 shadow-soft">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
               <div>
                 <p className="text-sm text-muted-foreground mb-1">Total Value</p>
                 <p className="text-3xl font-extrabold">${totalPrice.toFixed(2)}</p>
+                <p className="text-sm text-muted-foreground mt-2 sm:hidden">
+                  Save ${(wishlistCourses.reduce((sum, c) => sum + c.price, 0) - totalPrice).toFixed(2)} with current discounts
+                </p>
               </div>
-              <Button size="lg">
+              <Button size="lg" className="w-full sm:w-auto shrink-0">
                 Enroll in All Courses
               </Button>
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground hidden sm:block">
               Save ${(wishlistCourses.reduce((sum, c) => sum + c.price, 0) - totalPrice).toFixed(2)} with current discounts
             </p>
           </div>

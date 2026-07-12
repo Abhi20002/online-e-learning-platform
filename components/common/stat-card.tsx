@@ -24,11 +24,16 @@ interface StatCardProps {
 export function StatCard({ icon: Icon, label, value, tone = "brand", trend, className }: StatCardProps) {
   return (
     <Card className={cn("p-5", className)}>
-      <div className="flex items-center justify-between">
-        <span className={cn("flex h-11 w-11 items-center justify-center rounded-xl", toneStyles[tone])}>
+      <div className="flex items-center justify-between gap-2">
+        <span className={cn("flex h-11 w-11 shrink-0 items-center justify-center rounded-xl", toneStyles[tone])}>
           <Icon size={20} aria-hidden="true" />
         </span>
-        {trend && <span className="text-xs font-semibold text-emerald-600">{trend}</span>}
+        {trend && (
+          <span className="text-xs font-semibold text-emerald-600 text-right">
+            <span className="inline sm:hidden">{trend.split(" ")[0]}</span>
+            <span className="hidden sm:inline">{trend}</span>
+          </span>
+        )}
       </div>
       <p className="mt-4 text-2xl font-extrabold text-ink-900">{value}</p>
       <p className="text-sm text-ink-500">{label}</p>
