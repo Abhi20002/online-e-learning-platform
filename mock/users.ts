@@ -64,7 +64,7 @@ export const instructors: Instructor[] = [
     id: "inst-1",
     email: "angela.davis@eduplatform.com",
     name: "Dr. Angela Davis",
-    avatar: "https://i.pravatar.cc/150?img=6",
+    avatar: "https://i.pravatar.cc/150?img=59",
     role: "instructor",
     status: "active",
     designation: "Senior Web Developer",
