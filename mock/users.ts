@@ -3,7 +3,7 @@ import type { User, Instructor } from "@/types";
 export const users: User[] = [
   {
     id: "1",
-    email: "admin@eduplatform.com",
+    email: "admin@skillbridge.com",
     name: "Admin User",
     avatar: "https://i.pravatar.cc/150?img=1",
     role: "admin",
@@ -16,7 +16,7 @@ export const users: User[] = [
   },
   {
     id: "2",
-    email: "john.doe@example.com",
+    email: "john.doe@skillbridge.com",
     name: "John Doe",
     avatar: "https://i.pravatar.cc/150?img=2",
     role: "student",

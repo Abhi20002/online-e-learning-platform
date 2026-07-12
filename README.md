@@ -110,13 +110,13 @@ npm start
 
 ### Student Account
 ```
-Email:    john.doe@example.com
+Email:    john.doe@skillbridge.com
 Password: Password123
 ```
 
 ### Admin Account
 ```
-Email:    admin@eduplatform.com
+Email:    admin@skillbridge.com
 Password: Admin@123
 ```
 
